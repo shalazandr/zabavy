@@ -1,5 +1,6 @@
 package club.zabavy.core.dao.impl;
 
+import club.zabavy.core.dao.MeetingDAO;
 import club.zabavy.core.dao.OwnershipDAO;
 import club.zabavy.core.dao.UserDAO;
 import club.zabavy.core.domain.Role;
@@ -21,6 +22,9 @@ public class HibernateUserDAO implements UserDAO {
 
 	@Autowired
 	OwnershipDAO ownershipDAO;
+
+	@Autowired
+	MeetingDAO meetingDAO;
 
 	@Override
 	public List<User> getAll() {
@@ -63,6 +67,7 @@ public class HibernateUserDAO implements UserDAO {
 		Session session = sessionFactory.getCurrentSession();
 		User user = (User) session.load(User.class, id);
 		if(user != null) {
+			meetingDAO.removeInitiatedBy(id);
 			ownershipDAO.deleteOwnershipsForUser(id);
 			session.delete(user);
 		}
