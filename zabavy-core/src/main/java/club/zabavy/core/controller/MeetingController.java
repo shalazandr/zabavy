@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
+@RequestMapping("/api")
 public class MeetingController {
 
 	@Autowired
