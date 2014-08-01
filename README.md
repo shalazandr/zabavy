@@ -19,5 +19,5 @@ This project contains the following modules:
 * **Hibernate 4.6**
 * **MySQL 5**
 * **Jackson 2.4** for converting to/from JSON
-* **JUnit 2.4** for unit testing and **Spring-test** for integration tests.
+* **JUnit 2.4**, **Mockito 1.9** and **Spring-test** for testing.
 * **Maven 3**
