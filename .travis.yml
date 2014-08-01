@@ -6,4 +6,4 @@ before_script:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('1234') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - mysql -e 'create database zabavy;'
 after_success:
-  - mvn clean test cobertura:cobertura coveralls:chain
+  - mvn clean cobertura:cobertura coveralls:cobertura
