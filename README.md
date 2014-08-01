@@ -16,7 +16,7 @@ This project contains the following modules:
 
 * **Tomcat 7** on [OpenShift](http://openshift.com/)
 * **Spring 4**
-* **Hibernate 4.6**
+* **Hibernate 4.* **
 * **MySQL 5**
 * **Jackson 2.4** for converting to/from JSON
 * **JUnit 2.4**, **Mockito 1.9** and **Spring-test** for testing.

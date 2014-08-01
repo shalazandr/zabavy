@@ -10,7 +10,7 @@
 	<properties>
 		<java-version>1.7</java-version>
 		<org.springframework-version>4.0.6.RELEASE</org.springframework-version>
-		<hibernate-core-version>4.3.6.Final</hibernate-core-version>
+		<hibernate-core-version>4.3.5.Final</hibernate-core-version>
 		<jackson-core-version>2.4.1</jackson-core-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 	</properties>
