@@ -16,13 +16,9 @@ public class HibernateUserDAOTest extends HibernateBaseDAOTest {
 		User user = new User();
 		user.setFirstName("First");
 		user.setLastName("Last");
-		userDAO.insert(user);
-		user = userDAO.findById(user.getId());
-		assertEquals("First Last", user.getNickname());
-
-		user = new User();
-		user.setFirstName("First");
+		user.setNickname("nick");
 		user.setLevel(3);
+		user.setRole(Role.USER);
 		userDAO.insert(user);
 
 		assertTrue(user.getId() > 0);
@@ -30,7 +26,9 @@ public class HibernateUserDAOTest extends HibernateBaseDAOTest {
 		user = userDAO.findById(user.getId());
 
 		assertNotNull(user.getLastName());
-		assertEquals("First", user.getNickname());
+		assertEquals("First", user.getFirstName());
+		assertEquals("Last", user.getLastName());
+		assertEquals("nick", user.getNickname());
 		assertEquals(3, user.getLevel());
 		assertEquals(Role.USER, user.getRole());
 	}
@@ -41,6 +39,7 @@ public class HibernateUserDAOTest extends HibernateBaseDAOTest {
 		User user = new User();
 		user.setFirstName("Petro");
 		user.setLastName("Tre");
+		user.setNickname("nick");
 		user.setLevel(7);
 		userDAO.insert(user);
 		userID = user.getId();
