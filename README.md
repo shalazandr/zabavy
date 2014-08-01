@@ -1,4 +1,4 @@
-Zabavy [![Build Status](https://travis-ci.org/gemberge/zabavy.svg?branch=master)](https://travis-ci.org/gemberge/zabavy)
+Zabavy [![Build Status](https://travis-ci.org/gemberge/zabavy.svg?branch=master)](https://travis-ci.org/gemberge/zabavy)  [![Coverage Status](https://coveralls.io/repos/gemberge/zabavy/badge.png?branch=master)](https://coveralls.io/r/gemberge/zabavy?branch=master)
 --------------
 
 ## About
