@@ -3,9 +3,12 @@ package club.zabavy.core.dao.impl;
 import club.zabavy.core.dao.GameboxDAO;
 import club.zabavy.core.dao.OwnershipDAO;
 import club.zabavy.core.domain.entity.Gamebox;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +25,22 @@ public class HibernateGameboxDAO implements GameboxDAO {
 	OwnershipDAO ownershipDAO;
 
 	@Override
-	public List<Gamebox> getAll() {
-		Query query = sessionFactory.getCurrentSession().createQuery("from Gamebox");
-		return query.list();
+	public List<Gamebox> findByParam(String title, Boolean isAddon, Integer mink, Integer maxk) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Gamebox.class);
+
+		if(title != null) criteria.add( Restrictions.or(
+											Restrictions.ilike("ukTitle", title, MatchMode.ANYWHERE),
+											Restrictions.ilike("enTitle", title, MatchMode.ANYWHERE)
+										));
+		if(isAddon != null) {
+			if(isAddon == true) {
+				criteria.add(Restrictions.isNotNull("parent"));
+			} else {
+				criteria.add(Restrictions.isNull("parent"));
+			}
+		}
+
+		return criteria.list();
 	}
 
 	@Override

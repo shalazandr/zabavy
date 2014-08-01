@@ -24,8 +24,11 @@ public class GameboxController {
 
 	@RequestMapping(value = "/gameboxes", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Gamebox> getGameboxes() {
-		return gameboxService.getAll();
+	public List<Gamebox> findGameboxes( @RequestParam(required = false) String title,
+										@RequestParam(required = false) Boolean addon,
+										@RequestParam(required = false) Integer mink,
+										@RequestParam(required = false) Integer maxk) {
+		return gameboxService.findByParam(title, addon, mink, maxk);
 	}
 
 	@RequestMapping(value = "/gameboxes", method = RequestMethod.POST)
