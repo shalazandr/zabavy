@@ -33,6 +33,8 @@ public class UserServiceImpl implements UserService {
 		if(user.getLastName() == null) user.setLastName("");
 		if(user.getNickname() == null) user.setNickname((user.getFirstName() + " " + user.getLastName()).trim());
 		if(user.getRole() == null) user.setRole(Role.USER);
+		if(user.getPhotoUrl() == null) user.setPhotoUrl("/img/icon-user-default.png");
+		if(user.getLevel() < 0) user.setLevel(0);
 		userDAO.insert(user);
 	}
 
