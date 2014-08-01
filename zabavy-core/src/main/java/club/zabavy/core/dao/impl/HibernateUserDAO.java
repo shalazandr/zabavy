@@ -41,10 +41,6 @@ public class HibernateUserDAO implements UserDAO {
 
 	@Override
 	public void insert(User user) {
-		if(user.getFirstName() == null) user.setFirstName("");
-		if(user.getLastName() == null) user.setLastName("");
-		if(user.getNickname() == null) user.setNickname((user.getFirstName() + " " + user.getLastName()).trim());
-		if(user.getRole() == null) user.setRole(Role.USER);
 		sessionFactory.getCurrentSession().save(user);
 	}
 

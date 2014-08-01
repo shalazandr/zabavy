@@ -1,6 +1,7 @@
 package club.zabavy.core.service.impl;
 
 import club.zabavy.core.dao.UserDAO;
+import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.User;
 import club.zabavy.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void insert(User user) {
+		if(user.getFirstName() == null) user.setFirstName("");
+		if(user.getLastName() == null) user.setLastName("");
+		if(user.getNickname() == null) user.setNickname((user.getFirstName() + " " + user.getLastName()).trim());
+		if(user.getRole() == null) user.setRole(Role.USER);
 		userDAO.insert(user);
 	}
 
