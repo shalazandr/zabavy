@@ -4,11 +4,6 @@ import club.zabavy.core.domain.entity.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends BaseService<User> {
 	List<User> getAll();
-	User findById(long id);
-	void insert(User user);
-	void update(User user);
-	void remove(long id);
-
 }

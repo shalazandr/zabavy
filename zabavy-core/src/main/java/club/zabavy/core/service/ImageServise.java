@@ -4,10 +4,6 @@ import club.zabavy.core.domain.entity.Image;
 
 import java.util.List;
 
-public interface ImageServise {
+public interface ImageServise extends BaseService<Image> {
 	List<Image> getAll();
-	Image findById(long id);
-	void insert(Image image);
-	void update(Image image);
-	void remove(long id);
 }
