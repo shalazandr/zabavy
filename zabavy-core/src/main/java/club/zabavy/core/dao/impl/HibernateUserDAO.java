@@ -3,7 +3,6 @@ package club.zabavy.core.dao.impl;
 import club.zabavy.core.dao.MeetingDAO;
 import club.zabavy.core.dao.OwnershipDAO;
 import club.zabavy.core.dao.UserDAO;
-import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
