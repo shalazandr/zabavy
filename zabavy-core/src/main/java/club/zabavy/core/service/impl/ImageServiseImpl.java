@@ -2,6 +2,7 @@ package club.zabavy.core.service.impl;
 
 import club.zabavy.core.dao.ImageDAO;
 import club.zabavy.core.domain.entity.Image;
+import club.zabavy.core.service.ImageServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ImageServiseImpl implements ImageDAO {
+public class ImageServiseImpl implements ImageServise {
 
 	@Autowired
 	ImageDAO imageDAO;
