@@ -40,4 +40,10 @@ public class GameboxServiceImpl implements GameboxService {
 	public void remove(long id) {
 		gameboxDAO.remove(id);
 	}
+
+	@Override
+	public List<Gamebox> getAddonsFor(long id) {
+		return gameboxDAO.getAddonsFor(id);
+	}
+
 }

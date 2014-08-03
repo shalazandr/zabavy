@@ -59,6 +59,12 @@ public class GameboxController {
 		gameboxService.remove(id);
 	}
 
+	@RequestMapping(value = "/gameboxes/{gameboxId}/addons", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Gamebox> getGameboxAddons(@PathVariable("gameboxId") Long id) {
+		return gameboxService.getAddonsFor(id);
+	}
+
 	@RequestMapping(value = "/gameboxes/{gameboxId}/owners", method = RequestMethod.GET)
 	@ResponseBody
 	public List<User> getGameboxOwners(@PathVariable("gameboxId") Long id) {

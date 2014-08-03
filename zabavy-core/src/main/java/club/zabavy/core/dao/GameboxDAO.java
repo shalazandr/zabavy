@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface GameboxDAO extends BaseDAO<Gamebox> {
 	List<Gamebox> findByParam(String title, Boolean isAddon, Integer mink, Integer maxk);
+	List<Gamebox> getAddonsFor(long id);
+	void detachAddonsFrom(long id);
 }

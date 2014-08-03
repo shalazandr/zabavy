@@ -1,9 +1,6 @@
 package club.zabavy.core.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
@@ -21,12 +18,7 @@ public class Gamebox {
 	private short mink, maxk, minTime, maxTime;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "parent")
 	private Gamebox parent;
-
-	@OneToMany(mappedBy = "parent")
-	@JsonIgnore
-	private List<Gamebox> addons;
 
 	public long getId() {
 		return id;
@@ -106,14 +98,6 @@ public class Gamebox {
 
 	public void setParent(Gamebox parent) {
 		this.parent = parent;
-	}
-
-	public List<Gamebox> getAddons() {
-		return addons;
-	}
-
-	public void setAddons(List<Gamebox> addons) {
-		this.addons = addons;
 	}
 
 	@Override

@@ -78,12 +78,22 @@ public class HibernateGameboxDAO implements GameboxDAO {
 		Gamebox gamebox = (Gamebox) session.load(Gamebox.class, id);
 		if(gamebox != null){
 			ownershipDAO.deleteOwnershipsForGamebox(id);
-			List<Gamebox> addons = gamebox.getAddons();
-			for(Gamebox addon:addons){
-				addon.setParent(null);
-				session.update(addon);
-			}
+			detachAddonsFrom(id);
 			session.delete(gamebox);
 		}
+	}
+
+	@Override
+	public void detachAddonsFrom(long id) {
+		Query query = sessionFactory.getCurrentSession().createQuery("update Gamebox set parent = null where parent.id = :id");
+		query.setLong("id", id);
+		query.executeUpdate();
+	}
+
+	@Override
+	public List<Gamebox> getAddonsFor(long id) {
+		Query query = sessionFactory.getCurrentSession().createQuery("from Gamebox where parent.id = :id");
+		query.setLong("id", id);
+		return query.list();
 	}
 }
