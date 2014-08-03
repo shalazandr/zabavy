@@ -75,7 +75,7 @@ public class HibernateGameboxDAOTest extends HibernateBaseDAOTest {
 	}
 
 	@Test
-	public void updateGameboxTest() {
+	public void partialUpdateGameboxTest() {
 		Gamebox gamebox = new Gamebox();
 		gamebox.setUkTitle("Мчкін");
 		gamebox.setEnTitle("Munchkin");
@@ -105,6 +105,52 @@ public class HibernateGameboxDAOTest extends HibernateBaseDAOTest {
 		assertEquals(90, gamebox.getMaxTime());
 
 		assertNull(gamebox.getParent());
+	}
+
+	@Test
+	public void fullUpdateGameboxTest() {
+		Gamebox gamebox = new Gamebox();
+		gamebox.setUkTitle("Мчкін 2");
+		gamebox.setEnTitle("Mchkin 2");
+		gamebox.setDescription("");
+		gamebox.setMink((short) 2);
+		gamebox.setMaxk((short) 6);
+		gamebox.setMinTime((short) 30);
+		gamebox.setMaxTime((short) 90);
+		gameboxDAO.insert(gamebox);
+
+		long id = gamebox.getId();
+		assertTrue(id > 0);
+
+		Gamebox parent = new Gamebox();
+		parent.setUkTitle("Манчкін");
+		parent.setEnTitle("Munchkin");
+		gameboxDAO.insert(parent);
+
+		long parentId = parent.getId();
+
+		gamebox = new Gamebox();
+		gamebox.setId(id);
+		gamebox.setUkTitle("Манчкін 2");
+		gamebox.setEnTitle("Munchkin 2");
+		gamebox.setDescription("Funny party-game.");
+		gamebox.setMink((short) 3);
+		gamebox.setMaxk((short) 7);
+		gamebox.setMinTime((short) 120);
+		gamebox.setMaxTime((short) 390);
+		gamebox.setParent(parent);
+		gameboxDAO.update(gamebox);
+
+		gamebox = gameboxDAO.findById(id);
+		assertEquals("Манчкін 2", gamebox.getUkTitle());
+		assertEquals("Munchkin 2", gamebox.getEnTitle());
+		assertEquals("Funny party-game.", gamebox.getDescription());
+		assertEquals(3, gamebox.getMink());
+		assertEquals(7, gamebox.getMaxk());
+		assertEquals(120, gamebox.getMinTime());
+		assertEquals(390, gamebox.getMaxTime());
+		assertNotNull(gamebox.getParent());
+		assertEquals(parentId, gamebox.getParent().getId());
 	}
 
 	@Test
