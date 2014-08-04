@@ -1,7 +1,5 @@
 package club.zabavy.core.domain.entity;
 
-import club.zabavy.core.domain.MeetingStatus;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,7 +10,7 @@ public class Meeting {
 	@Id
 	@GeneratedValue
 	private long id;
-	private MeetingStatus status;
+	private Status status;
 	private String title;
 	private Date date;
 	private String place;
@@ -27,11 +25,11 @@ public class Meeting {
 		this.id = id;
 	}
 
-	public MeetingStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(MeetingStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
@@ -65,5 +63,9 @@ public class Meeting {
 
 	public void setInitiator(User initiator) {
 		this.initiator = initiator;
+	}
+
+	public enum Status {
+		PAST, PLANNED, WILLBE, CANCELED;
 	}
 }
