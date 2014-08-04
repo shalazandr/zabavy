@@ -62,7 +62,7 @@ public class HibernateUserDAO implements UserDAO {
 		Session session = sessionFactory.getCurrentSession();
 		User user = (User) session.load(User.class, id);
 		if(user != null) {
-			meetingDAO.removeInitiatedBy(id);
+			meetingDAO.changeInitiator(user, null);
 			ownershipDAO.deleteOwnershipsForUser(id);
 			session.delete(user);
 		}

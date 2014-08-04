@@ -2,6 +2,7 @@ package club.zabavy.core.dao.impl;
 
 import club.zabavy.core.dao.MeetingDAO;
 import club.zabavy.core.domain.entity.Meeting;
+import club.zabavy.core.domain.entity.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -59,9 +60,21 @@ public class HibernateMeetingDAO implements MeetingDAO {
 	}
 
 	@Override
-	public void removeInitiatedBy(long userId) {
-		Query query = sessionFactory.getCurrentSession().createQuery("delete from Meeting where initiator = :initiator");
-		query.setLong("initiator", userId);
-		query.executeUpdate();
+	public void changeInitiator(User from, User to) {
+		if(from == null) {
+			Query query = sessionFactory.getCurrentSession().createQuery("update Meeting set initiator = :newUser where initiator = null");
+			query.setEntity("newUser", to);
+			query.executeUpdate();
+		} else if(to == null) {
+			Query query = sessionFactory.getCurrentSession().createQuery("update Meeting set initiator = null where initiator = :oldUser");
+			query.setEntity("oldUser", from);
+			query.executeUpdate();
+		} else {
+			Query query = sessionFactory.getCurrentSession().createQuery("update Meeting set initiator = :newUser where initiator = :oldUser");
+			query.setEntity("oldUser", from);
+			query.setEntity("newUser", to);
+			query.executeUpdate();
+		}
+
 	}
 }

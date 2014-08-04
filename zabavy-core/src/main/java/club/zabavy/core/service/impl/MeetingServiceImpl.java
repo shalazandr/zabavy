@@ -51,8 +51,4 @@ public class MeetingServiceImpl implements MeetingService {
 		meetingDAO.remove(id);
 	}
 
-	@Override
-	public void removeInitiatedBy(long userId) {
-		meetingDAO.removeInitiatedBy(userId);
-	}
 }
