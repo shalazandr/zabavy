@@ -11,6 +11,7 @@ public class Meeting {
 	@GeneratedValue
 	private long id;
 	private Status status;
+	private Type type;
 	private String title;
 	private Date date;
 	private String place;
@@ -31,6 +32,14 @@ public class Meeting {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public String getTitle() {
@@ -67,5 +76,9 @@ public class Meeting {
 
 	public enum Status {
 		PAST, PLANNED, WILLBE, CANCELED;
+	}
+
+	public enum Type{
+		PUBLIC, PROTECTED, PRIVATE;
 	}
 }

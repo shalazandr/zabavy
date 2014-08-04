@@ -40,6 +40,7 @@ public class HibernateMeetingDAO implements MeetingDAO {
 		Meeting m = findById(meeting.getId());
 
 		if(meeting.getStatus() != null) m.setStatus(meeting.getStatus());
+		if(meeting.getType() != null) m.setType(meeting.getType());
 		if(meeting.getTitle() != null) m.setTitle(meeting.getTitle());
 		if(meeting.getDate() != null) m.setDate(meeting.getDate());
 		if(meeting.getPlace() != null) m.setPlace(meeting.getPlace());
