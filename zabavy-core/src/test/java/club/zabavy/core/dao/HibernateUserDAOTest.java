@@ -1,6 +1,7 @@
 package club.zabavy.core.dao;
 
 import club.zabavy.core.domain.Role;
+import club.zabavy.core.domain.entity.Meeting;
 import club.zabavy.core.domain.entity.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
 
 public class HibernateUserDAOTest extends HibernateBaseDAOTest {
+
 	@Autowired
 	UserDAO userDAO;
+
+	@Autowired
+	MeetingDAO meetingDAO;
 
 	@Test
 	public void insertUserTest(){
@@ -72,4 +77,29 @@ public class HibernateUserDAOTest extends HibernateBaseDAOTest {
 		assertNull(user);
 	}
 
+	@Test
+	public void deleteInitiatorTest(){
+		User user = new User();
+		user.setFirstName("First");
+		user.setLastName("Last");
+		userDAO.insert(user);
+		assertTrue(user.getId() > 0);
+		user = userDAO.findById(user.getId());
+		assertNotNull(user);
+
+		Meeting meeting = new Meeting();
+		meeting.setTitle("Test");
+		meeting.setInitiator(user);
+		meetingDAO.insert(meeting);
+
+		meeting = meetingDAO.findById(meeting.getId());
+		assertNotNull(meeting.getInitiator());
+
+		userDAO.remove(user.getId());
+		user = userDAO.findById(user.getId());
+		assertNull(user);
+
+		meeting = meetingDAO.findById(meeting.getId());
+		assertNull(meeting.getInitiator());
+	}
 }
