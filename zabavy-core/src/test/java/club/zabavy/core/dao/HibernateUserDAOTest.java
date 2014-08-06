@@ -3,8 +3,10 @@ package club.zabavy.core.dao;
 import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.Meeting;
 import club.zabavy.core.domain.entity.User;
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +17,10 @@ public class HibernateUserDAOTest extends HibernateBaseDAOTest {
 
 	@Autowired
 	MeetingDAO meetingDAO;
+
+	@Autowired(required=true)
+	@Qualifier("sessionFactory")
+	private SessionFactory sessionFactory;
 
 	@Test
 	public void insertUserTest(){
@@ -98,6 +104,8 @@ public class HibernateUserDAOTest extends HibernateBaseDAOTest {
 		userDAO.remove(user.getId());
 		user = userDAO.findById(user.getId());
 		assertNull(user);
+
+		sessionFactory.getCurrentSession().clear(); //cleaning Hibernate cache
 
 		meeting = meetingDAO.findById(meeting.getId());
 		assertNull(meeting.getInitiator());

@@ -81,4 +81,15 @@ public class Meeting {
 	public enum Type{
 		PUBLIC, PROTECTED, PRIVATE;
 	}
+
+	@Override
+	public String toString() {
+		return "Meeting{" +
+				"id=" + id +
+				", status=" + status +
+				", type=" + type +
+				", title='" + title + '\'' +
+				", initiator=" + initiator +
+				'}';
+	}
 }
