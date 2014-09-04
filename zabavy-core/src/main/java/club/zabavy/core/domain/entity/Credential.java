@@ -2,16 +2,17 @@ package club.zabavy.core.domain.entity;
 
 import club.zabavy.core.domain.Vendor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Credential {
 	@Id
+	@GeneratedValue
 	private long id;
-	private int vendorUserId;
+	private long vendorUserId;
 	private Vendor vendor;
-//	private User user;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User user;
 
 	public long getId() {
 		return id;
@@ -21,11 +22,11 @@ public class Credential {
 		this.id = id;
 	}
 
-	public int getVendorUserId() {
+	public long getVendorUserId() {
 		return vendorUserId;
 	}
 
-	public void setVendorUserId(int vendorUserId) {
+	public void setVendorUserId(long vendorUserId) {
 		this.vendorUserId = vendorUserId;
 	}
 
@@ -37,11 +38,21 @@ public class Credential {
 		this.vendor = vendor;
 	}
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "Credential{" +
+				"id=" + id +
+				", user=" + user +
+				", vendor=" + vendor +
+				", vendorUserId=" + vendorUserId +
+				'}';
+	}
 }

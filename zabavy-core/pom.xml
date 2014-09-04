@@ -63,7 +63,7 @@
 			<version>1.2</version>
 		</dependency>
 
-		<!-- Converting to JSON -->
+		<!-- JSON converting -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -93,6 +93,11 @@
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<version>${jackson-core-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>0.9.1</version>
 		</dependency>
 
 		<!-- Testing -->
