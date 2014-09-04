@@ -14,6 +14,14 @@ public class Credential {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 
+	public Credential() {}
+
+	public Credential(User user, Vendor vendor, long vendorUserId) {
+		this.vendorUserId = vendorUserId;
+		this.vendor = vendor;
+		this.user = user;
+	}
+
 	public long getId() {
 		return id;
 	}

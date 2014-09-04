@@ -4,10 +4,7 @@ import club.zabavy.core.dao.CredentialDAO;
 import club.zabavy.core.domain.Vendor;
 import club.zabavy.core.domain.entity.Credential;
 import club.zabavy.core.domain.entity.User;
-import club.zabavy.core.domain.exceptions.CredentialDoesNotExistException;
-import club.zabavy.core.domain.exceptions.InvalidAuthTokenException;
-import club.zabavy.core.domain.exceptions.NotAuthenticatedUserException;
-import club.zabavy.core.domain.exceptions.UnsupportedVendorException;
+import club.zabavy.core.domain.exceptions.*;
 import club.zabavy.core.service.AuthService;
 import club.zabavy.core.service.UserService;
 import com.jayway.jsonpath.JsonPath;
@@ -20,11 +17,13 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLConnection;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -108,18 +107,52 @@ public class AuthServiceImpl implements AuthService {
 		throw new UnsupportedVendorException();
 	}
 
-	public void login(String vendor, String code, HttpServletResponse response) throws IOException {
-		String token = getToken(vendor, code, "login");
-		long vendorUserId = getVendorUserId(vendor, token);
-		Credential credential = credentialDAO.find(Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
-		if(credential == null) {
-			throw new CredentialDoesNotExistException();
-		} else {
-			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(credential.getUser().getId()));
-			cookie.setHttpOnly(true);
-			cookie.setMaxAge(2592000); // 30 days
-			response.addCookie(cookie);
+	private long getVendorUserId(String vendor, String token) throws IOException {
+		String url, resp;
+		BufferedReader reader;
+		if(vendor.equalsIgnoreCase("fb")) {
+			url = "https://graph.facebook.com/me?access_token=" + token;
+			reader = new BufferedReader(new InputStreamReader((new URL(url)).openStream()));
+			resp = reader.readLine();
+			reader.close();
+			return Long.parseLong(JsonPath.read(resp, "$.id").toString());
+		} else if(vendor.equalsIgnoreCase("vk")) {
+			url = "https://api.vk.com/method/users.get?access_token=" + token;
+			reader = new BufferedReader(new InputStreamReader((new URL(url)).openStream()));
+			resp = reader.readLine();
+			reader.close();
+			return Long.parseLong(JsonPath.read(resp, "$.response[0].uid").toString());
 		}
+		throw new UnsupportedVendorException();
+	}
+
+	private User getVendorUserInfo(String vendor, String token) throws IOException {
+		String url, resp, firstName, lastName, photoUrl;
+		BufferedReader reader;
+		if(vendor.equalsIgnoreCase("fb")) {
+			url = "https://graph.facebook.com/me?fields=first_name,last_name,picture.height(200).width(200)&locale=uk_UK&access_token=" + token;
+			reader = new BufferedReader(new InputStreamReader((new URL(url)).openStream()));
+			resp = reader.readLine();
+			reader.close();
+			firstName = JsonPath.read(resp, "$.first_name").toString();
+			lastName = JsonPath.read(resp, "$.last_name").toString();
+			photoUrl = JsonPath.read(resp, "$.picture.data.url").toString();
+		} else if(vendor.equalsIgnoreCase("vk")) {
+			url = "https://api.vk.com/method/users.get?fields=photo_200&access_token=" + token;
+			URLConnection urlconn = (new URL(url)).openConnection();
+			urlconn.setRequestProperty("Accept-Language", "uk-UK"); //without that VK returns translit
+			reader = new BufferedReader(new InputStreamReader(urlconn.getInputStream()));
+			resp = reader.readLine();
+			reader.close();
+			firstName = JsonPath.read(resp, "$.response[0].first_name").toString();
+			lastName = JsonPath.read(resp, "$.response[0].last_name").toString();
+			photoUrl = JsonPath.read(resp, "$.response[0].photo_200").toString();
+		} else throw new UnsupportedVendorException();
+		User user = new User();
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setPhotoUrl(photoUrl);
+		return user;
 	}
 
 	public String createAuthToken(long userId) throws UnsupportedEncodingException {
@@ -138,6 +171,40 @@ public class AuthServiceImpl implements AuthService {
 		}
 	}
 
+	public void login(String vendor, String code, HttpServletResponse response) throws IOException {
+		String token = getToken(vendor, code, "login");
+		long vendorUserId = getVendorUserId(vendor, token);
+		Credential credential = credentialDAO.find(Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+		if(credential == null) {
+			throw new CredentialDoesNotExistException();
+		} else {
+			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(credential.getUser().getId()));
+			cookie.setHttpOnly(true);
+			cookie.setMaxAge(2592000); // 30 days
+			response.addCookie(cookie);
+		}
+	}
+
+	@Transactional
+	public void register(String vendor, String code, HttpServletResponse response) throws IOException {
+		String token = getToken(vendor, code, "register");
+		long vendorUserId = getVendorUserId(vendor, token);
+		Credential credential = credentialDAO.find(Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+		if(credential == null) {
+			User user = getVendorUserInfo(vendor, token);
+			userService.insert(user);
+			credential = new Credential(user, Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+			credentialDAO.insert(credential);
+
+			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(user.getId()));
+			cookie.setHttpOnly(true);
+			cookie.setMaxAge(2592000); // 30 days
+			response.addCookie(cookie);
+		} else {
+			throw new CredentialAlreadyExistException();
+		}
+	}
+
 	public User getUserFromCookie(HttpServletRequest request) {
 		Cookie cookie = WebUtils.getCookie(request, "zabavy.auth");
 		if(cookie == null) {
@@ -150,26 +217,5 @@ public class AuthServiceImpl implements AuthService {
 			}
 		}
 	}
-
-	private long getVendorUserId(String vendor, String token) throws IOException {
-		String url, resp;
-		BufferedReader reader;
-		if(vendor.equalsIgnoreCase("fb")) {
-			url = "https://graph.facebook.com/me?access_token=" + token;
-			reader = new BufferedReader(new InputStreamReader((new URL(url)).openStream()));
-			resp = reader.readLine();
-			reader.close();
-			return Long.parseLong(JsonPath.read(resp, "$.id").toString());
-		} else if(vendor.equalsIgnoreCase("vk")) {
-			url = "https://api.vk.com/method/users.get?access_token=" + token;
-			reader = new BufferedReader(new InputStreamReader((new URL(url)).openStream()));
-			resp = reader.readLine();
-			reader.close();
-			return Long.parseLong(JsonPath.read(resp, "$.response[0].uid").toString());
-		}
-
-		throw new UnsupportedVendorException();
-	}
-
 
 }

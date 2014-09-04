@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -35,5 +36,20 @@ public class AuthController {
 		Cookie cookie = new Cookie("zabavy.auth", "");
 		cookie.setMaxAge(1);
 		response.addCookie(cookie);
+	}
+
+	@RequestMapping(value = "/register/{vendor}", method = RequestMethod.GET)
+	@ResponseBody
+	public void register(	HttpServletRequest request,
+							HttpServletResponse response,
+							@PathVariable("vendor") String vendor,
+							@RequestParam(value = "code", required = false) String code) throws IOException {
+
+		if(code == null) {
+			response.sendRedirect(authService.getAuthLink(vendor, "register"));
+		} else {
+			authService.register(vendor, code, response);
+		}
+
 	}
 }
