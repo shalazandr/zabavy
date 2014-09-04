@@ -115,7 +115,10 @@ public class AuthServiceImpl implements AuthService {
 		if(credential == null) {
 			throw new CredentialDoesNotExistException();
 		} else {
-			response.addCookie(new Cookie("zabavy.auth", createAuthToken(credential.getUser().getId())));
+			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(credential.getUser().getId()));
+			cookie.setHttpOnly(true);
+			cookie.setMaxAge(2592000); // 30 days
+			response.addCookie(cookie);
 		}
 	}
 
