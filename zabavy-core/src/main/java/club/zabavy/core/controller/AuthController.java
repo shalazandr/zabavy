@@ -3,6 +3,7 @@ package club.zabavy.core.controller;
 import club.zabavy.core.domain.entity.User;
 import club.zabavy.core.domain.exceptions.NotAuthenticatedUserException;
 import club.zabavy.core.service.AuthService;
+import club.zabavy.core.service.SocialNetworkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,9 @@ public class AuthController {
 	@Autowired
 	AuthService authService;
 
+	@Autowired
+	SocialNetworkUtil socialNetworkUtil;
+
 	@RequestMapping(value = "/login/{vendor}", method = RequestMethod.GET)
 	@ResponseBody
 	public void login(	HttpServletRequest request,
@@ -27,7 +31,7 @@ public class AuthController {
 						@RequestParam(value = "code", required = false) String code) throws IOException {
 
 		if(code == null) {
-			response.sendRedirect(authService.getAuthLink(vendor, "login"));
+			response.sendRedirect(socialNetworkUtil.getAuthLink(vendor, "login"));
 		} else {
 			authService.login(vendor, code, response);
 		}
@@ -49,7 +53,7 @@ public class AuthController {
 							@PathVariable("vendor") String vendor,
 							@RequestParam(value = "code", required = false) String code) throws IOException {
 		if(code == null) {
-			response.sendRedirect(authService.getAuthLink(vendor, "register"));
+			response.sendRedirect(socialNetworkUtil.getAuthLink(vendor, "register"));
 		} else {
 			authService.register(vendor, code, response);
 		}
@@ -62,7 +66,7 @@ public class AuthController {
 						@PathVariable("vendor") String vendor,
 						@RequestParam(value = "code", required = false) String code) throws IOException {
 		if(code == null) {
-			response.sendRedirect(authService.getAuthLink(vendor, "connect"));
+			response.sendRedirect(socialNetworkUtil.getAuthLink(vendor, "connect"));
 		} else {
 			User user = authService.getUserFromCookie(request);
 			if(user == null) throw new NotAuthenticatedUserException();
