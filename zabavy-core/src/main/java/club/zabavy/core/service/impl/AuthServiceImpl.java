@@ -21,7 +21,6 @@ import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -155,7 +154,7 @@ public class AuthServiceImpl implements AuthService {
 		return user;
 	}
 
-	public String createAuthToken(long userId) throws UnsupportedEncodingException {
+	public String createAuthToken(long userId) {
 		String authToken = DigestUtils.md5DigestAsHex((userId + appSecret).getBytes());
 		authToken = DigestUtils.md5DigestAsHex((userId + authToken).getBytes());
 		return userId + ">>" + authToken;
@@ -163,12 +162,7 @@ public class AuthServiceImpl implements AuthService {
 
 	public boolean isAuthTokenValid(String token) {
 		String values[] = token.split(">>");
-		try {
-			return values[1].equals(createAuthToken(Long.parseLong(values[0])));
-		} catch(UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return token.equals(createAuthToken(Long.parseLong(values[0])));
 	}
 
 	public void login(String vendor, String code, HttpServletResponse response) throws IOException {
@@ -179,6 +173,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new CredentialDoesNotExistException();
 		} else {
 			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(credential.getUser().getId()));
+			cookie.setPath("/");
 			cookie.setHttpOnly(true);
 			cookie.setMaxAge(2592000); // 30 days
 			response.addCookie(cookie);
@@ -197,9 +192,23 @@ public class AuthServiceImpl implements AuthService {
 			credentialDAO.insert(credential);
 
 			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(user.getId()));
+			cookie.setPath("/");
 			cookie.setHttpOnly(true);
 			cookie.setMaxAge(2592000); // 30 days
 			response.addCookie(cookie);
+		} else {
+			throw new CredentialAlreadyExistException();
+		}
+	}
+
+	@Transactional
+	public void connect(User user, String vendor, String code) throws IOException {
+		String token = getToken(vendor, code, "connect");
+		long vendorUserId = getVendorUserId(vendor, token);
+		Credential credential = credentialDAO.find(Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+		if(credential == null) {
+			credential = new Credential(user, Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+			credentialDAO.insert(credential);
 		} else {
 			throw new CredentialAlreadyExistException();
 		}

@@ -1,5 +1,7 @@
 package club.zabavy.core.controller;
 
+import club.zabavy.core.domain.entity.User;
+import club.zabavy.core.domain.exceptions.NotAuthenticatedUserException;
 import club.zabavy.core.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,8 @@ public class AuthController {
 
 	@RequestMapping(value = "/login/{vendor}", method = RequestMethod.GET)
 	@ResponseBody
-	public void login(	HttpServletResponse response,
+	public void login(	HttpServletRequest request,
+						HttpServletResponse response,
 						@PathVariable("vendor") String vendor,
 						@RequestParam(value = "code", required = false) String code) throws IOException {
 
@@ -32,8 +35,9 @@ public class AuthController {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	@ResponseBody
-	public void logout(HttpServletResponse response) {
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
 		Cookie cookie = new Cookie("zabavy.auth", "");
+		cookie.setPath("/");
 		cookie.setMaxAge(1);
 		response.addCookie(cookie);
 	}
@@ -44,12 +48,25 @@ public class AuthController {
 							HttpServletResponse response,
 							@PathVariable("vendor") String vendor,
 							@RequestParam(value = "code", required = false) String code) throws IOException {
-
 		if(code == null) {
 			response.sendRedirect(authService.getAuthLink(vendor, "register"));
 		} else {
 			authService.register(vendor, code, response);
 		}
+	}
 
+	@RequestMapping(value = "/connect/{vendor}", method = RequestMethod.GET)
+	@ResponseBody
+	public void connect(HttpServletRequest request,
+						HttpServletResponse response,
+						@PathVariable("vendor") String vendor,
+						@RequestParam(value = "code", required = false) String code) throws IOException {
+		if(code == null) {
+			response.sendRedirect(authService.getAuthLink(vendor, "connect"));
+		} else {
+			User user = authService.getUserFromCookie(request);
+			if(user == null) throw new NotAuthenticatedUserException();
+			authService.connect(user, vendor, code);
+		}
 	}
 }

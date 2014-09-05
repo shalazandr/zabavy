@@ -11,4 +11,5 @@ public interface AuthService {
 	User getUserFromCookie(HttpServletRequest request);
 	void login(String vendor, String code, HttpServletResponse response) throws IOException;
 	void register(String vendor, String code, HttpServletResponse response) throws IOException;
+	void connect(User user, String vendor, String code) throws IOException;
 }
