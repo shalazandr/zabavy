@@ -1,8 +1,10 @@
 package club.zabavy.core.controller;
 
 import club.zabavy.core.domain.entity.Gamebox;
+import club.zabavy.core.domain.entity.Meeting;
 import club.zabavy.core.domain.entity.User;
 import club.zabavy.core.service.OwnershipService;
+import club.zabavy.core.service.ParticipationService;
 import club.zabavy.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ public class UserController {
 
 	@Autowired
 	private OwnershipService ownershipService;
+
+	@Autowired
+	private ParticipationService participationService;
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	@ResponseBody
@@ -79,4 +84,11 @@ public class UserController {
 	public void deleteOwnerhip(@PathVariable("userId") Long userId, @PathVariable("gameboxId") Long gameboxId) {
 		ownershipService.deleteOwnership(gameboxId, userId);
 	}
+
+	@RequestMapping(value = "/users/{userId}/meetings", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Meeting> getMeetings(@PathVariable("userId") Long id) {
+		return participationService.getMeetings(id);
+	}
+
 }
