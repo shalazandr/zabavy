@@ -26,9 +26,7 @@ public class HibernateMeetingDAO implements MeetingDAO {
 
 	@Override
 	public Meeting findById(long id) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from Meeting where id = :id");
-		query.setLong("id", id);
-		return (Meeting) query.uniqueResult();
+		return (Meeting) sessionFactory.getCurrentSession().get(Meeting.class, id);
 	}
 
 	@Override
@@ -53,7 +51,7 @@ public class HibernateMeetingDAO implements MeetingDAO {
 	@Override
 	public void remove(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		Meeting meeting = (Meeting) session.load(Meeting.class, id);
+		Meeting meeting = findById(id);
 		if(meeting != null) {
 			session.delete(meeting);
 		}

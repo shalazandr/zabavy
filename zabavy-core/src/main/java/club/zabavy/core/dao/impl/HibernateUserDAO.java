@@ -33,9 +33,7 @@ public class HibernateUserDAO implements UserDAO {
 
 	@Override
 	public User findById(long id) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from User where id = :id");
-		query.setLong("id", id);
-		return (User) query.uniqueResult();
+		return (User) sessionFactory.getCurrentSession().get(User.class, id);
 	}
 
 	@Override
@@ -60,7 +58,7 @@ public class HibernateUserDAO implements UserDAO {
 	@Override
 	public void remove(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		User user = (User) session.load(User.class, id);
+		User user = findById(id);
 		if(user != null) {
 			meetingDAO.changeInitiator(user, null);
 			ownershipDAO.deleteOwnershipsForUser(id);

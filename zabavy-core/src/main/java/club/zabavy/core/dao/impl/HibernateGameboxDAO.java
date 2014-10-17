@@ -45,9 +45,7 @@ public class HibernateGameboxDAO implements GameboxDAO {
 
 	@Override
 	public Gamebox findById(long id) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from Gamebox where id = :id");
-		query.setLong("id", id);
-		return (Gamebox) query.uniqueResult();
+		return (Gamebox) sessionFactory.getCurrentSession().get(Gamebox.class, id);
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class HibernateGameboxDAO implements GameboxDAO {
 	@Override
 	public void remove(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		Gamebox gamebox = (Gamebox) session.load(Gamebox.class, id);
+		Gamebox gamebox = findById(id);
 		if(gamebox != null){
 			ownershipDAO.deleteOwnershipsForGamebox(id);
 			detachAddonsFrom(id);

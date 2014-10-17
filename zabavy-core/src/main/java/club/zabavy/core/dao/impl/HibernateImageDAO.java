@@ -25,9 +25,7 @@ public class HibernateImageDAO implements ImageDAO{
 
 	@Override
 	public Image findById(long id) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from Image where id = :id");
-		query.setLong("id", id);
-		return (Image) query.uniqueResult();
+		return (Image) sessionFactory.getCurrentSession().get(Image.class, id);
 	}
 
 	@Override
@@ -47,7 +45,7 @@ public class HibernateImageDAO implements ImageDAO{
 	@Override
 	public void remove(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		Image image = (Image) session.load(Image.class, id);
+		Image image = findById(id);
 		if(image != null) session.delete(image);
 	}
 }
