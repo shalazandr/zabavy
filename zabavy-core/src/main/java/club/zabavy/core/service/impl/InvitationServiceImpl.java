@@ -34,7 +34,7 @@ public class InvitationServiceImpl implements InvitationService {
 
 	@Override
 	public void insert(Invitation entity) {
-		List<Invitation> lol = findByParam(entity.getMeeting().getId(), entity.getUser().getId(), null);
+		List<Invitation> lol = findByParam(entity.getMeeting().getId(), entity.getUser().getId(), null, null);
 		if(lol.size() > 0) throw new EntityExistsException("User already invited to this meeting");
 
 		Meeting meeting = meetingDAO.findById(entity.getMeeting().getId());
@@ -57,7 +57,7 @@ public class InvitationServiceImpl implements InvitationService {
 	}
 
 	@Override
-	public List<Invitation> findByParam(Long meetingId, Long userId, Invitation.Status status) {
-		return invitationDAO.findByParam(meetingId, userId, status);
+	public List<Invitation> findByParam(Long meetingId, Long userId, Invitation.Status status, Boolean used) {
+		return invitationDAO.findByParam(meetingId, userId, status, used);
 	}
 }

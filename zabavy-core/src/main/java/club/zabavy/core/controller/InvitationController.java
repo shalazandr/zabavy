@@ -21,8 +21,9 @@ public class InvitationController {
 	@ResponseBody
 	public List<Invitation> findInvitations(@RequestParam(required = false) Long meetingId,
 											@RequestParam(required = false) Long userId,
-											@RequestParam(required = false) Invitation.Status status) {
-		return invitationService.findByParam(meetingId, userId, status);
+											@RequestParam(required = false) Invitation.Status status,
+											@RequestParam(required = false) Boolean used) {
+		return invitationService.findByParam(meetingId, userId, status, used);
 	}
 
 	@RequestMapping(value = "/invitations", method = RequestMethod.POST)

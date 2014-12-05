@@ -47,11 +47,12 @@ public class HibernateInvitationDAO implements InvitationDAO {
 	}
 
 	@Override
-	public List<Invitation> findByParam(Long meetingId, Long userId, Invitation.Status status) {
+	public List<Invitation> findByParam(Long meetingId, Long userId, Invitation.Status status, Boolean used) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Invitation.class);
 		if(meetingId != null) criteria.add(Restrictions.eq("meeting.id", meetingId));
 		if(userId != null) criteria.add(Restrictions.eq("user.id", userId));
 		if(status != null) criteria.add(Restrictions.eq("status", status));
+		if(used != null) criteria.add(Restrictions.eq("used", used));
 		return criteria.list();
 	}
 }

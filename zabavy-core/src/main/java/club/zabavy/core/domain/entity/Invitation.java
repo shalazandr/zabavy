@@ -13,6 +13,7 @@ public class Invitation {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 	private Status status;
+	private boolean used;
 
 	public Invitation() {}
 
@@ -22,10 +23,11 @@ public class Invitation {
 		this.status = Status.NEW;
 	}
 
-	public Invitation(Meeting meeting, User user, Status status) {
+	public Invitation(Meeting meeting, User user, Status status, boolean used) {
 		this.meeting = meeting;
 		this.user = user;
 		this.status = status;
+		this.used = used;
 	}
 
 	public Long getId() {
@@ -60,13 +62,17 @@ public class Invitation {
 		this.status = status;
 	}
 
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+
 	@Override
 	public String toString() {
-		return "Invitation: " +
-				"  id=" + id +
-				", status=" + status + ",\n" +
-				"    meeting=" + meeting + ",\n" +
-				"    user=" + user;
+		return "Invitation: " + id + " " + status + ", " + used + ", meeting=" + meeting.getId() + ", user=" + user.getNickname();
 	}
 
 	public enum Status {
