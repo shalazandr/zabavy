@@ -59,6 +59,10 @@
 		</beans:property>
 	</beans:bean>
 
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="268435456"></beans:property>
+	</beans:bean>
+
 	<beans:import resource="controllers.xml"/>
 
 	<context:property-placeholder location="classpath:application.properties" />
