@@ -1,59 +1,51 @@
 package club.zabavy.core.service.impl;
 
+import club.zabavy.core.dao.FileDAO;
 import club.zabavy.core.domain.entity.File;
 import club.zabavy.core.domain.entity.FileBytes;
 import club.zabavy.core.service.FileService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
 public class FileServiceImpl implements FileService {
 
 	@Autowired
-	private SessionFactory sessionFactory;
-
-	@Override
-	public FileBytes saveFileBytes(FileBytes bytes) {
-		return null;
-	}
-
-	@Override
-	public FileBytes getFileBytes(Long id) {
-		return null;
-	}
-
-	@Override
-	public Boolean deleteFileBytes(Long id) {
-		return null;
-	}
+	private FileDAO fileDAO;
 
 	@Override
 	public File saveFile(File file, FileBytes bytes) {
-		Session currentSession = sessionFactory.getCurrentSession();
-		file.setStatus(File.Status.NEW);
-		currentSession.save(file);
+		fileDAO.saveFile(file);
 		bytes.setId(file.getId());
-		currentSession.save(bytes);
+		fileDAO.saveFileBytes(bytes);
 		return file;
 	}
 
 	@Override
 	public File getFile(Long id) {
-		return null;
+		return fileDAO.getFile(id);
 	}
 
 	@Override
 	public File updateFile(File file) {
-		return null;
+		File old = getFile(file.getId());
+		if(old == null) throw new NoSuchElementException("There isn't file with id " + file.getId());
+		return fileDAO.updateFile(file);
 	}
 
 	@Override
-	public File deleteFile(Long id) {
-		return null;
+	public void deleteFile(Long id) {
+		File file = getFile(id);
+		if(file == null) throw new NoSuchElementException("There isn't file with id " + id);
+		fileDAO.deleteFile(file);
+	}
+
+	@Override
+	public FileBytes getFileBytes(Long id) {
+		return fileDAO.getFileBytes(id);
 	}
 }
