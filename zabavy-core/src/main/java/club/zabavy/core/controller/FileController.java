@@ -4,11 +4,9 @@ import club.zabavy.core.domain.entity.File;
 import club.zabavy.core.domain.entity.FileBytes;
 import club.zabavy.core.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,6 +18,7 @@ public class FileController {
 	@Autowired
 	private FileService fileService;
 
+	@ResponseBody
 	@RequestMapping(value = "/files", method = RequestMethod.POST)
 	public File uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 		if(multipartFile != null && !multipartFile.isEmpty()) {
@@ -29,13 +28,15 @@ public class FileController {
 		} else return null;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "/files/{fileId}", method = RequestMethod.GET)
 	public File getFile(@PathVariable("fileId") Long fileId) {
 		return fileService.getFile(fileId);
 	}
 
-	@RequestMapping(value = "/files/{fileId}/bytes", method = RequestMethod.GET)
-	public FileBytes getFileBytes(@PathVariable("fileId") Long fileId) {
-		return fileService.getFileBytes(fileId);
+	@ResponseBody
+	@RequestMapping(value = "/files/{fileId}/bytes", method = RequestMethod.GET, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public byte[] getFileBytes(@PathVariable("fileId") Long fileId) {
+		return fileService.getFileBytes(fileId).getBytes();
 	}
 }
