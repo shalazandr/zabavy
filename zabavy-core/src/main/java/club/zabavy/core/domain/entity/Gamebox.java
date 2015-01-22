@@ -12,7 +12,7 @@ public class Gamebox {
 	private String ukTitle, enTitle;
 
 	@OneToOne
-	private Image cover;
+	private File cover;
 
 	private String description;
 	private short mink, maxk, minTime, maxTime;
@@ -44,11 +44,11 @@ public class Gamebox {
 		this.enTitle = enTitle;
 	}
 
-	public Image getCover() {
+	public File getCover() {
 		return cover;
 	}
 
-	public void setCover(Image cover) {
+	public void setCover(File cover) {
 		this.cover = cover;
 	}
 
