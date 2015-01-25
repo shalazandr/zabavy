@@ -1,6 +1,7 @@
 package club.zabavy.core.controller;
 
 import club.zabavy.core.domain.entity.User;
+import club.zabavy.core.domain.exceptions.CredentialDoesNotExistException;
 import club.zabavy.core.domain.exceptions.NotAuthenticatedUserException;
 import club.zabavy.core.service.AuthService;
 import club.zabavy.core.service.SocialNetworkUtil;
@@ -33,17 +34,23 @@ public class AuthController {
 		if(code == null) {
 			response.sendRedirect(socialNetworkUtil.getAuthLink(vendor, "login"));
 		} else {
-			authService.login(vendor, code, response);
+			try {
+				authService.login(vendor, code, response);
+				response.sendRedirect("/");
+			} catch(CredentialDoesNotExistException e) {
+				response.sendRedirect("/users/new/" + vendor);	// FIXME: it's bad for non browser client
+			}
 		}
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	@ResponseBody
-	public void logout(HttpServletRequest request, HttpServletResponse response) {
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie cookie = new Cookie("zabavy.auth", "");
 		cookie.setPath("/");
 		cookie.setMaxAge(1);
 		response.addCookie(cookie);
+		response.sendRedirect("/");	// FIXME: it's bad for non browser client
 	}
 
 	@RequestMapping(value = "/register/{vendor}", method = RequestMethod.GET)
@@ -56,6 +63,7 @@ public class AuthController {
 			response.sendRedirect(socialNetworkUtil.getAuthLink(vendor, "register"));
 		} else {
 			authService.register(vendor, code, response);
+			response.sendRedirect("/");	// FIXME: it's bad for non browser client
 		}
 	}
 
