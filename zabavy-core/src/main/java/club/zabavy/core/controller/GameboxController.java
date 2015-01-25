@@ -1,20 +1,27 @@
 package club.zabavy.core.controller;
 
+import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.Gamebox;
 import club.zabavy.core.domain.entity.User;
+import club.zabavy.core.domain.exceptions.ForbiddenActionException;
+import club.zabavy.core.service.AuthService;
 import club.zabavy.core.service.GameboxService;
 import club.zabavy.core.service.OwnershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/api")
-public class GameboxController {
+public class GameboxController extends ExceptionHandlingController{
+
+	@Autowired
+	AuthService authService;
 
 	@Autowired
 	private GameboxService gameboxService;
@@ -33,7 +40,8 @@ public class GameboxController {
 
 	@RequestMapping(value = "/gameboxes", method = RequestMethod.POST)
 	@ResponseBody
-	public Gamebox saveGamebox(@RequestBody Gamebox gamebox) {
+	public Gamebox saveGamebox(@RequestBody Gamebox gamebox, HttpServletRequest request) {
+		User user = authService.getUserFromCookie(request);
 		gameboxService.insert(gamebox);
 		return gamebox;
 	}
@@ -48,14 +56,17 @@ public class GameboxController {
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateGamebox(@PathVariable("gameboxId") Long id, @RequestBody Gamebox gamebox) {
+	public void updateGamebox(@PathVariable("gameboxId") Long id, @RequestBody Gamebox gamebox, HttpServletRequest request) {
+		User user = authService.getUserFromCookie(request);
 		gamebox.setId(id);
 		gameboxService.update(gamebox);
 	}
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void deleteGamebox(@PathVariable("gameboxId") Long id) {
+	public void deleteGamebox(@PathVariable("gameboxId") Long id, HttpServletRequest request) {
+		User user = authService.getUserFromCookie(request);
+		if(user.getRole() == Role.USER) throw new ForbiddenActionException("Delete gamebox can only admin or moderator.");
 		gameboxService.remove(id);
 	}
 
@@ -73,8 +84,14 @@ public class GameboxController {
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}/owners", method = RequestMethod.POST)
 	@ResponseBody
-	public void addOwnerForGamebox(@PathVariable("gameboxId") Long gameboxId, @RequestBody User user) {
-		if(user.getId() > 0) ownershipService.createOwnership(gameboxId, user.getId());
+	public void addOwnerForGamebox(@PathVariable("gameboxId") Long gameboxId, @RequestBody User user, HttpServletRequest request) {
+		User creator = authService.getUserFromCookie(request);
+		if(user.getId() > 0){
+			if(creator.getId() != user.getId()) {
+				if(creator.getRole() == Role.USER) throw new ForbiddenActionException("Create ownerhip for other users can only admin or moderator.");
+			}
+			ownershipService.createOwnership(gameboxId, user.getId());
+		}
 	}
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}/owners/{userId}", method = RequestMethod.GET)
@@ -85,7 +102,11 @@ public class GameboxController {
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}/owners/{userId}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void deleteOwnerhip(@PathVariable("userId") Long userId, @PathVariable("gameboxId") Long gameboxId) {
+	public void deleteOwnerhip(@PathVariable("userId") Long userId, @PathVariable("gameboxId") Long gameboxId, HttpServletRequest request) {
+		User creator = authService.getUserFromCookie(request);
+		if(creator.getId() != userId) {
+			if(creator.getRole() == Role.USER) throw new ForbiddenActionException("Delete ownerhip for other users can only admin or moderator.");
+		}
 		ownershipService.deleteOwnership(gameboxId, userId);
 	}
 
