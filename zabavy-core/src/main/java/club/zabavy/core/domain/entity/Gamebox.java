@@ -14,6 +14,7 @@ public class Gamebox {
 	@OneToOne
 	private File cover;
 
+	@Column(length = 1024)
 	private String description;
 	private short mink, maxk, minTime, maxTime;
 
