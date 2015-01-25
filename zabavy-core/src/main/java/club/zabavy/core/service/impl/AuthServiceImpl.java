@@ -97,10 +97,12 @@ public class AuthServiceImpl implements AuthService {
 	public User getUserFromCookie(HttpServletRequest request) {
 		Cookie cookie = WebUtils.getCookie(request, "zabavy.auth");
 		if(cookie == null) {
-			throw new NotAuthenticatedUserException();
+			throw new NotAuthenticatedUserException("User is not authenticated!");
 		} else {
 			if(isAuthTokenValid(cookie.getValue())) {
-				return userService.findById(Long.parseLong(cookie.getValue().split(">>")[0]));
+				User user = userService.findById(Long.parseLong(cookie.getValue().split(">>")[0]));
+				if(user != null) return user;
+				else throw new NotAuthenticatedUserException("User is not authenticated!");
 			} else {
 				throw new InvalidAuthTokenException();
 			}
