@@ -28,14 +28,13 @@
 		<beans:property name="ignoreAcceptHeader" value="true" />
 	</beans:bean>
 
-	<!-- If no extension matched, use JSP view -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="order" value="2" />
 		<beans:property name="prefix">
-			<beans:value>/WEB-INF/views/</beans:value>
+			<beans:value>/rsc/</beans:value>
 		</beans:property>
 		<beans:property name="suffix">
-			<beans:value>.jsp</beans:value>
+			<beans:value>.html</beans:value>
 		</beans:property>
 	</beans:bean>
 
