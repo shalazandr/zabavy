@@ -44,9 +44,9 @@ public class InvitationController {
 
 	@RequestMapping(value = "/invitations/{invitationId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateInvitation(@PathVariable("invitationId") Long id, @RequestBody Invitation invitation) {
+	public Invitation updateInvitation(@PathVariable("invitationId") Long id, @RequestBody Invitation invitation) {
 		invitation.setId(id);
-		invitationService.update(invitation);
+		return invitationService.update(invitation);
 	}
 
 	@RequestMapping(value = "/invitations/{invitationId}", method = RequestMethod.DELETE)

@@ -57,10 +57,10 @@ public class GameboxController extends ExceptionHandlingController{
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateGamebox(@PathVariable("gameboxId") Long id, @RequestBody Gamebox gamebox, HttpServletRequest request) {
+	public Gamebox updateGamebox(@PathVariable("gameboxId") Long id, @RequestBody Gamebox gamebox, HttpServletRequest request) {
 		User user = authService.getUserFromCookie(request);
 		gamebox.setId(id);
-		gameboxService.update(gamebox);
+		return gameboxService.update(gamebox);
 	}
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}", method = RequestMethod.DELETE)

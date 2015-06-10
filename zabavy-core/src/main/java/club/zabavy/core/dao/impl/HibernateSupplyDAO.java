@@ -28,12 +28,13 @@ public class HibernateSupplyDAO implements SupplyDAO {
 	}
 
 	@Override
-	public void update(Supply entity) {
+	public Supply update(Supply entity) {
 		Supply old = findById(entity.getId());
 		if(old != null) {
 			old.setStatus(entity.getStatus());
 			sessionFactory.getCurrentSession().update(old);
 		} else throw new NoSuchElementException("Supply with such id does not exist");
+		return old;
 	}
 
 	@Override

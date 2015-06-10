@@ -34,7 +34,7 @@ public class HibernateGamingDayDAO implements GamingDayDAO {
 	}
 
 	@Override
-	public void update(GamingDay gamingDay) {
+	public GamingDay update(GamingDay gamingDay) {
 		GamingDay d = findById(gamingDay.getId());
 
 		if(gamingDay.getTitle() != null) d.setTitle(gamingDay.getTitle());
@@ -43,6 +43,7 @@ public class HibernateGamingDayDAO implements GamingDayDAO {
 		if(gamingDay.getEndTime() != null) d.setEndTime(gamingDay.getEndTime());
 
 		sessionFactory.getCurrentSession().update(d);
+		return d;
 	}
 
 	@Override

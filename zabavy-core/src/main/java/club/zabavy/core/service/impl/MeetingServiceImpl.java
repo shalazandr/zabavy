@@ -40,9 +40,9 @@ public class MeetingServiceImpl implements MeetingService {
 	}
 
 	@Override
-	public void update(Meeting meeting) {
+	public Meeting update(Meeting meeting) {
 		if(meeting.getId() <= 0) throw new NullPointerException("Wrong id.");
-		meetingDAO.update(meeting);
+		return meetingDAO.update(meeting);
 	}
 
 	@Override

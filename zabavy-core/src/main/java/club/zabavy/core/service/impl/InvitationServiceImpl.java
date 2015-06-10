@@ -47,8 +47,8 @@ public class InvitationServiceImpl implements InvitationService {
 	}
 
 	@Override
-	public void update(Invitation entity) {
-		invitationDAO.update(entity);
+	public Invitation update(Invitation entity) {
+		return invitationDAO.update(entity);
 	}
 
 	@Override

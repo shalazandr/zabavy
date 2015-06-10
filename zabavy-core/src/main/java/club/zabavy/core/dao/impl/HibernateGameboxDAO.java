@@ -54,7 +54,7 @@ public class HibernateGameboxDAO implements GameboxDAO {
 	}
 
 	@Override
-	public void update(Gamebox gamebox) {
+	public Gamebox update(Gamebox gamebox) {
 		Gamebox gb = findById(gamebox.getId());
 
 		if(gamebox.getUkTitle() != null) gb.setUkTitle(gamebox.getUkTitle());
@@ -68,6 +68,7 @@ public class HibernateGameboxDAO implements GameboxDAO {
 		if(gamebox.getParent() != null) gb.setParent(gamebox.getParent());
 
 		sessionFactory.getCurrentSession().update(gb);
+		return gb;
 	}
 
 	@Override

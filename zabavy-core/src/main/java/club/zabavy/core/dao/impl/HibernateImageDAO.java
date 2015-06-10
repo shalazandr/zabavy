@@ -34,12 +34,13 @@ public class HibernateImageDAO implements ImageDAO{
 	}
 
 	@Override
-	public void update(Image image) {
+	public Image update(Image image) {
 		Image i = findById(image.getId());
 
 		if(image.getUrl() != null) i.setUrl(image.getUrl());
 
 		sessionFactory.getCurrentSession().update(i);
+		return i;
 	}
 
 	@Override

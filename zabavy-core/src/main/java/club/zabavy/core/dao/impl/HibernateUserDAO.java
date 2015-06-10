@@ -42,7 +42,7 @@ public class HibernateUserDAO implements UserDAO {
 	}
 
 	@Override
-	public void update(User user) {
+	public User update(User user) {
 		User u = findById(user.getId());
 
 		if(user.getNickname() != null) u.setNickname(user.getNickname());
@@ -53,6 +53,7 @@ public class HibernateUserDAO implements UserDAO {
 		if(user.getRole() != null) u.setRole(user.getRole());
 
 		sessionFactory.getCurrentSession().update(u);
+		return u;
 	}
 
 	@Override

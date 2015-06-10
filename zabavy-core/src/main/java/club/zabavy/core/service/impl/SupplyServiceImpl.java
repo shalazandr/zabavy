@@ -32,8 +32,8 @@ public class SupplyServiceImpl implements SupplyService {
 	}
 
 	@Override
-	public void update(Supply entity) {
-		supplyDAO.update(entity);
+	public Supply update(Supply entity) {
+		return supplyDAO.update(entity);
 	}
 
 	@Override

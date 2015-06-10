@@ -30,12 +30,13 @@ public class HibernateInvitationDAO implements InvitationDAO {
 	}
 
 	@Override
-	public void update(Invitation entity) {
+	public Invitation update(Invitation entity) {
 		Invitation invitation = findById(entity.getId());
 		if(invitation != null) {
 			invitation.setStatus(entity.getStatus());
 			sessionFactory.getCurrentSession().update(invitation);
 		}
+		return invitation;
 	}
 
 	@Override

@@ -32,8 +32,8 @@ public class ImageServiseImpl implements ImageServise {
 	}
 
 	@Override
-	public void update(Image image) {
-		imageDAO.update(image);
+	public Image update(Image image) {
+		return imageDAO.update(image);
 	}
 
 	@Override

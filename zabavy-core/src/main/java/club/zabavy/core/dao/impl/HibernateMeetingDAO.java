@@ -35,7 +35,7 @@ public class HibernateMeetingDAO implements MeetingDAO {
 	}
 
 	@Override
-	public void update(Meeting meeting) {
+	public Meeting update(Meeting meeting) {
 		Meeting m = findById(meeting.getId());
 
 		if(meeting.getStatus() != null) m.setStatus(meeting.getStatus());
@@ -46,6 +46,7 @@ public class HibernateMeetingDAO implements MeetingDAO {
 		if(meeting.getInitiator() != null) m.setInitiator(meeting.getInitiator());
 
 		sessionFactory.getCurrentSession().update(m);
+		return m;
 	}
 
 	@Override

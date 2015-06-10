@@ -26,7 +26,7 @@ public class SupplyController {
 
 	@RequestMapping(value = "/supplies", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateSupply(@RequestParam("supply") Supply supply) {
-		supplyService.update(supply);
+	public Supply updateSupply(@RequestParam("supply") Supply supply) {
+		return supplyService.update(supply);
 	}
 }

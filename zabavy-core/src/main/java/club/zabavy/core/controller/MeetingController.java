@@ -41,9 +41,9 @@ public class MeetingController {
 
 	@RequestMapping(value = "/meetings/{meetingId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateMeeting(@PathVariable("meetingId") Long id, @RequestBody Meeting meeting) {
+	public Meeting updateMeeting(@PathVariable("meetingId") Long id, @RequestBody Meeting meeting) {
 		meeting.setId(id);
-		meetingService.update(meeting);
+		return meetingService.update(meeting);
 	}
 
 	@RequestMapping(value = "/meetings/{meetingId}", method = RequestMethod.DELETE)

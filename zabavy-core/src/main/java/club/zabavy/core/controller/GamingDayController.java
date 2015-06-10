@@ -41,9 +41,9 @@ public class GamingDayController {
 
 	@RequestMapping(value = "/days/{gamingDayId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateGamingDay(@PathVariable("gamingDayId") Long id, @RequestBody GamingDay gamingDay) {
+	public GamingDay updateGamingDay(@PathVariable("gamingDayId") Long id, @RequestBody GamingDay gamingDay) {
 		gamingDay.setId(id);
-		gamingDayService.update(gamingDay);
+		return gamingDayService.update(gamingDay);
 	}
 
 	@RequestMapping(value = "/days/{gamingDayId}", method = RequestMethod.DELETE)

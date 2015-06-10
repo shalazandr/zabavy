@@ -32,9 +32,9 @@ public class GamingDayServiceImpl implements GamingDayService {
 	}
 
 	@Override
-	public void update(GamingDay gamingDay) {
+	public GamingDay update(GamingDay gamingDay) {
 		if(gamingDay.getId() <= 0) throw new NullPointerException("Wrong id.");
-		gamingDayDAO.update(gamingDay);
+		return gamingDayDAO.update(gamingDay);
 	}
 
 	@Override

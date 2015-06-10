@@ -32,8 +32,8 @@ public class GameboxServiceImpl implements GameboxService {
 	}
 
 	@Override
-	public void update(Gamebox gamebox) {
-		gameboxDAO.update(gamebox);
+	public Gamebox update(Gamebox gamebox) {
+		return gameboxDAO.update(gamebox);
 	}
 
 	@Override
