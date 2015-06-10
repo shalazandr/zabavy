@@ -8,6 +8,7 @@ import club.zabavy.core.service.AuthService;
 import club.zabavy.core.service.GameboxService;
 import club.zabavy.core.service.OwnershipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,7 @@ public class GameboxController extends ExceptionHandlingController{
 	}
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}", method = RequestMethod.DELETE)
-	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteGamebox(@PathVariable("gameboxId") Long id, HttpServletRequest request) {
 		User user = authService.getUserFromCookie(request);
 		if(user.getRole() == Role.USER) throw new ForbiddenActionException("Delete gamebox can only admin or moderator.");
@@ -101,7 +102,7 @@ public class GameboxController extends ExceptionHandlingController{
 	}
 
 	@RequestMapping(value = "/gameboxes/{gameboxId}/owners/{userId}", method = RequestMethod.DELETE)
-	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteOwnerhip(@PathVariable("userId") Long userId, @PathVariable("gameboxId") Long gameboxId, HttpServletRequest request) {
 		User creator = authService.getUserFromCookie(request);
 		if(creator.getId() != userId) {

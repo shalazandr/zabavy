@@ -3,6 +3,7 @@ package club.zabavy.core.controller;
 import club.zabavy.core.domain.entity.GamingDay;
 import club.zabavy.core.service.GamingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class GamingDayController {
 	}
 
 	@RequestMapping(value = "/days/{gamingDayId}", method = RequestMethod.DELETE)
-	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteGamingDay(@PathVariable("gamingDayId") Long id) {
 		gamingDayService.remove(id);
 	}

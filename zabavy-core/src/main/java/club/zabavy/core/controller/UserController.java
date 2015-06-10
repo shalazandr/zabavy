@@ -6,6 +6,7 @@ import club.zabavy.core.domain.entity.User;
 import club.zabavy.core.service.OwnershipService;
 import club.zabavy.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
-	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteUser(@PathVariable("userId") Long id) {
 		userService.remove(id);
 	}
@@ -76,7 +77,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/gameboxes/{gameboxId}", method = RequestMethod.DELETE)
-	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteOwnerhip(@PathVariable("userId") Long userId, @PathVariable("gameboxId") Long gameboxId) {
 		ownershipService.deleteOwnership(gameboxId, userId);
 	}
