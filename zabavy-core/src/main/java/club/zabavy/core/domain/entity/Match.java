@@ -17,6 +17,8 @@ public class Match {
 	private Gamebox mainGamebox;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Gamebox> additionalGameboxes;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Score> scores;
 
 	public Match() {}
 
@@ -26,6 +28,15 @@ public class Match {
 		this.event = event;
 		this.mainGamebox = mainGamebox;
 		this.additionalGameboxes = additionalGameboxes;
+	}
+
+	public Match(Boolean tutorial, WinType winType, GamingDay event, Gamebox mainGamebox, Set<Gamebox> additionalGameboxes, Set<Score> scores) {
+		this.tutorial = tutorial;
+		this.winType = winType;
+		this.event = event;
+		this.mainGamebox = mainGamebox;
+		this.additionalGameboxes = additionalGameboxes;
+		this.scores = scores;
 	}
 
 	public long getId() {
@@ -76,6 +87,14 @@ public class Match {
 		this.additionalGameboxes = additionalGameboxes;
 	}
 
+	public Set<Score> getScores() {
+		return scores;
+	}
+
+	public void setScores(Set<Score> scores) {
+		this.scores = scores;
+	}
+
 	@Override
 	public String toString() {
 		return "Match{" +
@@ -85,6 +104,7 @@ public class Match {
 				", event=" + event +
 				", mainGamebox=" + mainGamebox +
 				", additionalGameboxes=" + additionalGameboxes +
+				", scores=" + scores +
 				'}';
 	}
 
