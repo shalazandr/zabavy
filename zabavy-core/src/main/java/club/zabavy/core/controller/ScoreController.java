@@ -26,6 +26,12 @@ public class ScoreController {
 		return scoreService.findByParam(matchId, userId, win);
 	}
 
+	@RequestMapping(value = "/matches/{matchId}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Score> getMatchScores(@PathVariable("matchId") Long matchId, HttpServletResponse response) throws IOException {
+		return scoreService.findByParam(matchId, null, null);
+	}
+
 	@RequestMapping(value = "/scores", method = RequestMethod.POST)
 	@ResponseBody
 	public Score saveScore(@RequestBody Score score) {
@@ -37,7 +43,7 @@ public class ScoreController {
 	@ResponseBody
 	public Score getScoreById(@PathVariable("scoreId") Long id, HttpServletResponse response) throws IOException {
 		Score score = scoreService.findById(id);
-		if(score == null) response.sendError(404);
+		if (score == null) response.sendError(404);
 		return score;
 	}
 
