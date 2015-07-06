@@ -31,7 +31,19 @@ public class UserServiceImpl implements UserService {
 	public void insert(User user) {
 		if(user.getFirstName() == null) user.setFirstName("");
 		if(user.getLastName() == null) user.setLastName("");
-		if(user.getNickname() == null || user.getNickname().isEmpty()) user.setNickname((user.getFirstName() + " " + user.getLastName().substring(0, 3) + "."));
+		if(user.getNickname() == null || user.getNickname().isEmpty()) {
+			String nickname = user.getFirstName() + " ";
+			if(user.getLastName().trim().equals("")) {
+				nickname = user.getFirstName();
+			} else {
+				if(user.getLastName().length() > 2) {
+					nickname = nickname + user.getLastName().substring(0, 3) + ".";
+				} else {
+					nickname = nickname + user.getLastName() + ".";
+				}
+			}
+			user.setNickname(nickname);
+		}
 		if(user.getRole() == null) user.setRole(Role.USER);
 		if(user.getPhotoUrl() == null) user.setPhotoUrl("/img/icon-user-default.png");
 		if(user.getLevel() < 0) user.setLevel(0);
