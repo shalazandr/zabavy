@@ -26,7 +26,7 @@ public class ScoreController {
 		return scoreService.findByParam(matchId, userId, win);
 	}
 
-	@RequestMapping(value = "/matches/{matchId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/matches/{matchId}/scores", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Score> getMatchScores(@PathVariable("matchId") Long matchId, HttpServletResponse response) throws IOException {
 		return scoreService.findByParam(matchId, null, null);
