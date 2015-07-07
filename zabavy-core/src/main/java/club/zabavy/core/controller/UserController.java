@@ -32,8 +32,10 @@ public class UserController {
 	public List<User> findGameboxes( @RequestParam(required = false) String name,
 									 @RequestParam(required = false) Integer level,
 									 @RequestParam(required = false) Role role) throws UnsupportedEncodingException {
-		byte[] bytes = name.getBytes("ISO-8859-1");
-		return userService.findByParam(new String(bytes, "UTF-8"), level, role);
+		if(name != null) {
+			name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
+		}
+		return userService.findByParam(name, level, role);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST)

@@ -37,8 +37,10 @@ public class GameboxController extends ExceptionHandlingController{
 										@RequestParam(required = false) Boolean addon,
 										@RequestParam(required = false) Integer mink,
 										@RequestParam(required = false) Integer maxk) throws UnsupportedEncodingException {
-		byte[] bytes = title.getBytes("ISO-8859-1");
-		return gameboxService.findByParam(new String(bytes, "UTF-8"), addon, mink, maxk);
+		if(title != null) {
+			title = new String(title.getBytes("ISO-8859-1"), "UTF-8");
+		}
+		return gameboxService.findByParam(title, addon, mink, maxk);
 	}
 
 	@RequestMapping(value = "/gameboxes", method = RequestMethod.POST)
