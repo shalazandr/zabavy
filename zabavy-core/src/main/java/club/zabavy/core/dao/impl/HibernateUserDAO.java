@@ -3,10 +3,13 @@ package club.zabavy.core.dao.impl;
 import club.zabavy.core.dao.MeetingDAO;
 import club.zabavy.core.dao.OwnershipDAO;
 import club.zabavy.core.dao.UserDAO;
+import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.User;
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,9 +29,22 @@ public class HibernateUserDAO implements UserDAO {
 	MeetingDAO meetingDAO;
 
 	@Override
-	public List<User> getAll() {
-		Query query = sessionFactory.getCurrentSession().createQuery("from User");
-		return query.list();
+	public List<User> findByParam(String name, Integer level, Role role) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+
+		if(name != null) criteria.add( Restrictions.or(
+				Restrictions.ilike("nickname", name, MatchMode.ANYWHERE),
+				Restrictions.ilike("firstName", name, MatchMode.ANYWHERE),
+				Restrictions.ilike("lastName", name, MatchMode.ANYWHERE)
+		));
+		if(level != null) {
+			criteria.add(Restrictions.eq("lvl", level));
+		}
+		if(role != null) {
+			criteria.add(Restrictions.eq("role", role));
+		}
+
+		return criteria.list();
 	}
 
 	@Override

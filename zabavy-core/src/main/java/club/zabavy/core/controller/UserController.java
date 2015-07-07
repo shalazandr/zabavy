@@ -1,5 +1,6 @@
 package club.zabavy.core.controller;
 
+import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.Gamebox;
 import club.zabavy.core.domain.entity.Meeting;
 import club.zabavy.core.domain.entity.User;
@@ -26,8 +27,10 @@ public class UserController {
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	@ResponseBody
-	public List<User> getUsers() {
-		return userService.getAll();
+	public List<User> findGameboxes( @RequestParam(required = false) String name,
+									 @RequestParam(required = false) Integer level,
+									 @RequestParam(required = false) Role role) {
+		return userService.findByParam(name, level, role);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
