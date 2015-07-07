@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -35,8 +36,9 @@ public class GameboxController extends ExceptionHandlingController{
 	public List<Gamebox> findGameboxes( @RequestParam(required = false) String title,
 										@RequestParam(required = false) Boolean addon,
 										@RequestParam(required = false) Integer mink,
-										@RequestParam(required = false) Integer maxk) {
-		return gameboxService.findByParam(title, addon, mink, maxk);
+										@RequestParam(required = false) Integer maxk) throws UnsupportedEncodingException {
+		byte[] bytes = title.getBytes("ISO-8859-1");
+		return gameboxService.findByParam(new String(bytes, "UTF-8"), addon, mink, maxk);
 	}
 
 	@RequestMapping(value = "/gameboxes", method = RequestMethod.POST)

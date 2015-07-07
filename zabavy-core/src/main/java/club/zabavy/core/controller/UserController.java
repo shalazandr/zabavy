@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Controller
@@ -29,8 +31,9 @@ public class UserController {
 	@ResponseBody
 	public List<User> findGameboxes( @RequestParam(required = false) String name,
 									 @RequestParam(required = false) Integer level,
-									 @RequestParam(required = false) Role role) {
-		return userService.findByParam(name, level, role);
+									 @RequestParam(required = false) Role role) throws UnsupportedEncodingException {
+		byte[] bytes = name.getBytes("ISO-8859-1");
+		return userService.findByParam(new String(bytes, "UTF-8"), level, role);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
