@@ -4,11 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Presence {
+public class Presence extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private GamingDay gamingDay;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -29,14 +26,6 @@ public class Presence {
 		this.user = user;
 		this.timeFrom = timeFrom;
 		this.timeTo = timeTo;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public GamingDay getGamingDay() {

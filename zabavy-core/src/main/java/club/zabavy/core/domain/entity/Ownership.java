@@ -1,25 +1,12 @@
 package club.zabavy.core.domain.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
-public class Ownership {
+public class Ownership extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private long id;
 	private long gameboxId, userId;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public long getGameboxId() {
 		return gameboxId;

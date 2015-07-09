@@ -4,11 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
-public class Gamebox {
+public class Gamebox extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private long id;
 	private String ukTitle, enTitle;
 
 	@OneToOne
@@ -20,14 +17,6 @@ public class Gamebox {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Gamebox parent;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getUkTitle() {
 		return ukTitle;

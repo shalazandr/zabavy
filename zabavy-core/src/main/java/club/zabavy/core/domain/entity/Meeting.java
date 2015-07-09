@@ -5,11 +5,8 @@ import java.util.Date;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
-public class Meeting {
+public class Meeting extends BaseEntity{
 
-	@Id
-	@GeneratedValue
-	private long id;
 	private Status status;
 	private Type type;
 	private String title;
@@ -17,14 +14,6 @@ public class Meeting {
 	private String place;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User initiator;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public Status getStatus() {
 		return status;

@@ -5,10 +5,8 @@ import club.zabavy.core.domain.Vendor;
 import javax.persistence.*;
 
 @Entity
-public class Credential {
-	@Id
-	@GeneratedValue
-	private long id;
+public class Credential extends BaseEntity {
+
 	private long vendorUserId;
 	private Vendor vendor;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -20,14 +18,6 @@ public class Credential {
 		this.vendorUserId = vendorUserId;
 		this.vendor = vendor;
 		this.user = user;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public long getVendorUserId() {

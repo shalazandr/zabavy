@@ -5,10 +5,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Maatch")
-public class Match {
-	@Id
-	@GeneratedValue
-	private long id;
+public class Match extends BaseEntity {
+
 	private Boolean tutorial;
 	private WinType winType;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -26,14 +24,6 @@ public class Match {
 		this.event = event;
 		this.mainGamebox = mainGamebox;
 		this.additionalGameboxes = additionalGameboxes;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public Boolean isTutorial() {

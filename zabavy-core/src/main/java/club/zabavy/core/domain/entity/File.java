@@ -1,15 +1,10 @@
 package club.zabavy.core.domain.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
-public class File {
+public class File extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private Long id;
 	private Status status;
 	private String filename, url;
 	private Long vkId;
@@ -19,14 +14,6 @@ public class File {
 
 	public File(String filename) {
 		this.filename = filename;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Status getStatus() {

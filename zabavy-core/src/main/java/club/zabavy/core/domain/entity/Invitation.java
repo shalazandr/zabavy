@@ -3,11 +3,8 @@ package club.zabavy.core.domain.entity;
 import javax.persistence.*;
 
 @Entity
-public class Invitation {
+public class Invitation extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Meeting meeting;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -28,14 +25,6 @@ public class Invitation {
 		this.user = user;
 		this.status = status;
 		this.used = used;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Meeting getMeeting() {

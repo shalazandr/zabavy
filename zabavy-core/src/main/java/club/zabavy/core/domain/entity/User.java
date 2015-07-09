@@ -3,26 +3,14 @@ package club.zabavy.core.domain.entity;
 import club.zabavy.core.domain.Role;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
-public class User {
-	@Id
-	@GeneratedValue
-	private long id;
+public class User extends BaseEntity {
+
 	private String nickname, firstName, lastName, photoUrl;
 	private int level;
 	private Role role;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getNickname() {
 		return nickname;

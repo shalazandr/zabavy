@@ -2,17 +2,12 @@ package club.zabavy.core.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
-public class GamingDay {
+public class GamingDay extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private Long id;
 	private String title;
 	@Column(length = 1000)
 	private String description;
@@ -26,14 +21,6 @@ public class GamingDay {
 		this.description = description;
 		this.startTime = startTime;
 		this.endTime = endTime;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getTitle() {

@@ -3,10 +3,8 @@ package club.zabavy.core.domain.entity;
 import javax.persistence.*;
 
 @Entity
-public class Score {
-	@Id
-	@GeneratedValue
-	private long id;
+public class Score extends BaseEntity {
+
 	private boolean win;
 	private short points;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -21,14 +19,6 @@ public class Score {
 		this.points = points;
 		this.user = user;
 		this.match = match;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public boolean isWin() {

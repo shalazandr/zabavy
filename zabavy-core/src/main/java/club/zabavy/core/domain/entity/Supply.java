@@ -1,25 +1,12 @@
 package club.zabavy.core.domain.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
-public class Supply {
+public class Supply extends BaseEntity {
 
-	@Id
-	@GeneratedValue
-	private long id;
 	private long userId, meetingId, gameId;
 	private Status status;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public long getUserId() {
 		return userId;
