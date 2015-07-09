@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -39,6 +40,7 @@ public class HibernateImageDAO implements ImageDAO{
 
 		if(image.getUrl() != null) i.setUrl(image.getUrl());
 
+		i.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().update(i);
 		return i;
 	}

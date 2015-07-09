@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -32,6 +33,7 @@ public class HibernateSupplyDAO implements SupplyDAO {
 		Supply old = findById(entity.getId());
 		if(old != null) {
 			old.setStatus(entity.getStatus());
+			old.setUpdatedAt(new Date());
 			sessionFactory.getCurrentSession().update(old);
 		} else throw new NoSuchElementException("Supply with such id does not exist");
 		return old;

@@ -7,6 +7,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public class HibernateFileDAO implements FileDAO {
 
@@ -42,6 +44,7 @@ public class HibernateFileDAO implements FileDAO {
 
 	@Override
 	public File updateFile(File file) {
+		file.setCreatedAt(new Date());
 		sessionFactory.getCurrentSession().update(file);
 		return file;
 	}

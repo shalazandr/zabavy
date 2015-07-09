@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -30,6 +31,7 @@ public class HibernateScoreDAO implements ScoreDAO{
 	@Override
 	public Score update(Score entity) {
 		sessionFactory.getCurrentSession().update(entity);
+		entity.setUpdatedAt(new Date());
 		return entity;
 	}
 

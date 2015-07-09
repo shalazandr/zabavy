@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,6 +39,7 @@ public class HibernateMatchDAO implements MatchDAO {
 		if (entity.getEvent() != null) old.setEvent(entity.getEvent());
 		if (entity.getMainGamebox() != null) old.setMainGamebox(entity.getMainGamebox());
 		if (entity.getAdditionalGameboxes() != null) old.setAdditionalGameboxes(entity.getAdditionalGameboxes());
+		old.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().update(old);
 		return old;
 	}

@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,6 +37,7 @@ public class HibernateInvitationDAO implements InvitationDAO {
 			invitation.setStatus(entity.getStatus());
 			sessionFactory.getCurrentSession().update(invitation);
 		}
+		invitation.setUpdatedAt(new Date());
 		return invitation;
 	}
 

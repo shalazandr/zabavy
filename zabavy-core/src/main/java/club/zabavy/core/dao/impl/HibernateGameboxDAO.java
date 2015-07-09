@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -67,6 +68,7 @@ public class HibernateGameboxDAO implements GameboxDAO {
 		if(gamebox.getMaxTime() > 0) gb.setMaxTime(gamebox.getMaxTime());
 		if(gamebox.getParent() != null) gb.setParent(gamebox.getParent());
 
+		gb.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().update(gb);
 		return gb;
 	}

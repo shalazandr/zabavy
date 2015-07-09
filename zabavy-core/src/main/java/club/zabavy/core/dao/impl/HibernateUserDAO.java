@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -54,6 +55,8 @@ public class HibernateUserDAO implements UserDAO {
 
 	@Override
 	public void insert(User user) {
+		user.setCreatedAt(new Date());
+		user.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().save(user);
 	}
 
@@ -67,6 +70,12 @@ public class HibernateUserDAO implements UserDAO {
 		if(user.getPhotoUrl() != null) u.setPhotoUrl(user.getPhotoUrl());
 		if(user.getLevel() > 0) u.setLevel(user.getLevel());
 		if(user.getRole() != null) u.setRole(user.getRole());
+
+		if(user.getCreatedAt() != null) u.setCreatedAt(user.getCreatedAt());
+		u.setUpdatedAt(new Date());
+
+		System.out.println(u.getCreatedAt());
+		System.out.println(u.getUpdatedAt());
 
 		sessionFactory.getCurrentSession().update(u);
 		return u;

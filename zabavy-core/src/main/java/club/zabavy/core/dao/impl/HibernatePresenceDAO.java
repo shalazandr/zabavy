@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,6 +37,7 @@ public class HibernatePresenceDAO implements PresenceDAO {
 		if(entity.getTimeFrom() != null) old.setTimeFrom(entity.getTimeFrom());
 		if(entity.getTimeTo() != null) old.setTimeTo(entity.getTimeTo());
 
+		old.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().update(old);
 		return old;
 	}

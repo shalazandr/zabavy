@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -42,6 +43,7 @@ public class HibernateGamingDayDAO implements GamingDayDAO {
 		if(gamingDay.getStartTime() != null) d.setStartTime(gamingDay.getStartTime());
 		if(gamingDay.getEndTime() != null) d.setEndTime(gamingDay.getEndTime());
 
+		d.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().update(d);
 		return d;
 	}

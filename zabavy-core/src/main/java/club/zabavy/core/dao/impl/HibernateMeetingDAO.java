@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -45,6 +46,7 @@ public class HibernateMeetingDAO implements MeetingDAO {
 		if(meeting.getPlace() != null) m.setPlace(meeting.getPlace());
 		if(meeting.getInitiator() != null) m.setInitiator(meeting.getInitiator());
 
+		m.setUpdatedAt(new Date());
 		sessionFactory.getCurrentSession().update(m);
 		return m;
 	}
