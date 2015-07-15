@@ -5,5 +5,5 @@ import club.zabavy.core.domain.entity.Presence;
 import java.util.List;
 
 public interface PresenceService extends BaseService<Presence> {
-	List<Presence> findByParam(Long gamingDayId, Long userId, Boolean isEnded);
+	List<Presence> findByParam(Long gamingDayId, Long userId, Boolean isEnded, int offset, int limit);
 }

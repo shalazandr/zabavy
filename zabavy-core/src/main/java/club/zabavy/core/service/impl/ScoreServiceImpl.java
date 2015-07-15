@@ -40,7 +40,7 @@ public class ScoreServiceImpl implements ScoreService{
 		Match match = entity.getMatch();
 		if(match == null) throw new NullPointerException("Match should be specified!");
 
-		List<Score> scores = scoreDAO.findByParam(match.getId(), user.getId(), null);
+		List<Score> scores = scoreDAO.findByParam(match.getId(), user.getId(), null, 0, 12);
 
 		if(scores.size() > 0) throw new EntityExistsException("Score for specified user and match already exist");
 		user = userDAO.findById(user.getId());
@@ -69,7 +69,7 @@ public class ScoreServiceImpl implements ScoreService{
 	}
 
 	@Override
-	public List<Score> findByParam(Long matchId, Long userId, Boolean win) {
-		return scoreDAO.findByParam(matchId, userId, win);
+	public List<Score> findByParam(Long matchId, Long userId, Boolean win, int offset, int limit) {
+		return scoreDAO.findByParam(matchId, userId, win, offset, limit);
 	}
 }

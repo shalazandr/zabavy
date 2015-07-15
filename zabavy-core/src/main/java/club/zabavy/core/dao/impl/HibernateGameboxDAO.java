@@ -26,7 +26,7 @@ public class HibernateGameboxDAO implements GameboxDAO {
 	OwnershipDAO ownershipDAO;
 
 	@Override
-	public List<Gamebox> findByParam(String title, Boolean isAddon, Integer mink, Integer maxk) {
+	public List<Gamebox> findByParam(String title, Boolean isAddon, Integer mink, Integer maxk, int offset, int limit) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Gamebox.class);
 
 		if(title != null) criteria.add( Restrictions.or(
@@ -40,7 +40,8 @@ public class HibernateGameboxDAO implements GameboxDAO {
 				criteria.add(Restrictions.isNull("parent"));
 			}
 		}
-
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(limit);
 		return criteria.list();
 	}
 

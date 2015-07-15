@@ -20,10 +20,12 @@ public class MatchController {
 
 	@RequestMapping(value = "/matches", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Match> findMatches(@RequestParam(required = false) Long eventId,
-								   @RequestParam(required = false) Long gameboxId,
-								   @RequestParam(required = false) Boolean isTutorial) {
-		return matchService.findByParam(eventId, gameboxId, isTutorial);
+	public List<Match> findMatches( @RequestParam(required = false) Long eventId,
+									@RequestParam(required = false) Long gameboxId,
+									@RequestParam(required = false) Boolean isTutorial,
+									@RequestParam(defaultValue = "0") int offset,
+									@RequestParam(defaultValue = "21") int limit) {
+		return matchService.findByParam(eventId, gameboxId, isTutorial, offset, limit);
 	}
 
 	@RequestMapping(value = "/matches", method = RequestMethod.POST)

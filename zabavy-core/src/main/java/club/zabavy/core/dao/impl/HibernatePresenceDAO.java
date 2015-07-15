@@ -51,7 +51,7 @@ public class HibernatePresenceDAO implements PresenceDAO {
 	}
 
 	@Override
-	public List<Presence> findByParam(Long gamingDayId, Long userId, Boolean isEnded) {
+	public List<Presence> findByParam(Long gamingDayId, Long userId, Boolean isEnded, int offset, int limit) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Presence.class);
 		if(gamingDayId != null) criteria.add(Restrictions.eq("gamingDay.id", gamingDayId));
 		if(userId != null) criteria.add(Restrictions.eq("user.id", userId));
@@ -62,6 +62,8 @@ public class HibernatePresenceDAO implements PresenceDAO {
 				criteria.add(Restrictions.isNotNull("timeTo"));
 			}
 		}
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(limit);
 		return criteria.list();
 	}
 }

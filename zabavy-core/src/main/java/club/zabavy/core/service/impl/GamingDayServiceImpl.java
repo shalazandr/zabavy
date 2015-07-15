@@ -17,8 +17,8 @@ public class GamingDayServiceImpl implements GamingDayService {
 	GamingDayDAO gamingDayDAO;
 
 	@Override
-	public List<GamingDay> getAll() {
-		return gamingDayDAO.getAll();
+	public List<GamingDay> getAll(int offset, int limit) {
+		return gamingDayDAO.getAll(offset, limit);
 	}
 
 	@Override

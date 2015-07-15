@@ -36,11 +36,13 @@ public class GameboxController extends ExceptionHandlingController{
 	public List<Gamebox> findGameboxes( @RequestParam(required = false) String title,
 										@RequestParam(required = false) Boolean addon,
 										@RequestParam(required = false) Integer mink,
-										@RequestParam(required = false) Integer maxk) throws UnsupportedEncodingException {
+										@RequestParam(required = false) Integer maxk,
+										@RequestParam(defaultValue = "0") int offset,
+										@RequestParam(defaultValue = "21") int limit) throws UnsupportedEncodingException {
 		if(title != null) {
 			title = new String(title.getBytes("ISO-8859-1"), "UTF-8");
 		}
-		return gameboxService.findByParam(title, addon, mink, maxk);
+		return gameboxService.findByParam(title, addon, mink, maxk, offset, limit);
 	}
 
 	@RequestMapping(value = "/gameboxes", method = RequestMethod.POST)

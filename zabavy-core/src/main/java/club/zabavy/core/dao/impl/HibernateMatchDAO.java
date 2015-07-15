@@ -54,11 +54,13 @@ public class HibernateMatchDAO implements MatchDAO {
 	}
 
 	@Override
-	public List<Match> findByParam(Long eventId, Long gameboxId, Boolean isTutorial) {
+	public List<Match> findByParam(Long eventId, Long gameboxId, Boolean isTutorial, int offset, int limit) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Match.class);
 		if(eventId != null) criteria.add(Restrictions.eq("event.id", eventId));
 		if(gameboxId != null) criteria.add(Restrictions.eq("gamebox.id", gameboxId));
 		if(isTutorial != null) criteria.add(Restrictions.eq("tutorial", isTutorial));
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(limit);
 		return criteria.list();
 	}
 }

@@ -6,5 +6,5 @@ import club.zabavy.core.domain.entity.User;
 import java.util.List;
 
 public interface UserDAO extends BaseDAO<User> {
-	List<User> findByParam(String name, Integer level, Role role);
+	List<User> findByParam(String name, Integer level, Role role, int offset, int limit);
 }

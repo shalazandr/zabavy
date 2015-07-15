@@ -30,7 +30,7 @@ public class HibernateUserDAO implements UserDAO {
 	MeetingDAO meetingDAO;
 
 	@Override
-	public List<User> findByParam(String name, Integer level, Role role) {
+	public List<User> findByParam(String name, Integer level, Role role, int offset, int limit) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
 
 		if(name != null) criteria.add( Restrictions.or(
@@ -44,7 +44,8 @@ public class HibernateUserDAO implements UserDAO {
 		if(role != null) {
 			criteria.add(Restrictions.eq("role", role));
 		}
-
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(limit);
 		return criteria.list();
 	}
 

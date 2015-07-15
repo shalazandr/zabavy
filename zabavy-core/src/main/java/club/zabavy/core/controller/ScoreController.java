@@ -22,14 +22,18 @@ public class ScoreController {
 	@ResponseBody
 	public List<Score> findScores(@RequestParam(required = false) Long matchId,
 								  @RequestParam(required = false) Long userId,
-								  @RequestParam(required = false) Boolean win) {
-		return scoreService.findByParam(matchId, userId, win);
+								  @RequestParam(required = false) Boolean win,
+								  @RequestParam(defaultValue = "0") int offset,
+								  @RequestParam(defaultValue = "21") int limit) {
+		return scoreService.findByParam(matchId, userId, win, offset, limit);
 	}
 
 	@RequestMapping(value = "/matches/{matchId}/scores", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Score> getMatchScores(@PathVariable("matchId") Long matchId, HttpServletResponse response) throws IOException {
-		return scoreService.findByParam(matchId, null, null);
+	public List<Score> getMatchScores(@PathVariable("matchId") Long matchId,
+									  @RequestParam(defaultValue = "0") int offset,
+									  @RequestParam(defaultValue = "21") int limit) throws IOException {
+		return scoreService.findByParam(matchId, null, null, offset, limit);
 	}
 
 	@RequestMapping(value = "/scores", method = RequestMethod.POST)

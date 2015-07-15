@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
 	UserDAO userDAO;
 
 	@Override
-	public List<User> findByParam(String name, Integer level, Role role) {
-		return userDAO.findByParam(name, level, role);
+	public List<User> findByParam(String name, Integer level, Role role, int offset, int limit) {
+		return userDAO.findByParam(name, level, role, offset, limit);
 	}
 
 	@Override

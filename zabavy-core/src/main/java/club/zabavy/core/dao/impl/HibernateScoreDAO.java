@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class HibernateScoreDAO implements ScoreDAO{
+public class HibernateScoreDAO implements ScoreDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -42,11 +42,13 @@ public class HibernateScoreDAO implements ScoreDAO{
 	}
 
 	@Override
-	public List<Score> findByParam(Long matchId, Long userId, Boolean win) {
+	public List<Score> findByParam(Long matchId, Long userId, Boolean win, int offset, int limit) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Score.class);
 		if(matchId != null) criteria.add(Restrictions.eq("match.id", matchId));
 		if(userId != null) criteria.add(Restrictions.eq("user.id", userId));
 		if(win != null) criteria.add(Restrictions.eq("tutorial", win));
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(limit);
 		return criteria.list();
 	}
 }

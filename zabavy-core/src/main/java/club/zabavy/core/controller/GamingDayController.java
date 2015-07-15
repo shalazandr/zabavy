@@ -20,8 +20,8 @@ public class GamingDayController {
 
 	@RequestMapping(value = "/days", method = RequestMethod.GET)
 	@ResponseBody
-	public List<GamingDay> getGamingDays() {
-		return gamingDayService.getAll();
+	public List<GamingDay> getGamingDays(@RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "21") int limit) {
+		return gamingDayService.getAll(offset, limit);
 	}
 
 	@RequestMapping(value = "/days", method = RequestMethod.POST)

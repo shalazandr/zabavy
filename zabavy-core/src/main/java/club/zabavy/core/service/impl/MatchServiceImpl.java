@@ -74,7 +74,7 @@ public class MatchServiceImpl implements MatchService{
 	}
 
 	@Override
-	public List<Match> findByParam(Long eventId, Long gameboxId, Boolean isTutorial) {
-		return matchDAO.findByParam(eventId, gameboxId, isTutorial);
+	public List<Match> findByParam(Long eventId, Long gameboxId, Boolean isTutorial, int offset, int limit) {
+		return matchDAO.findByParam(eventId, gameboxId, isTutorial, offset, limit);
 	}
 }

@@ -31,7 +31,7 @@ public class PresenceServiceImpl implements PresenceService {
 
 	@Override
 	public void insert(Presence entity) {
-		List<Presence> lol = findByParam(entity.getGamingDay().getId(), entity.getUser().getId(), null);
+		List<Presence> lol = findByParam(entity.getGamingDay().getId(), entity.getUser().getId(), null, 0, 12);
 		if(lol.size() > 0) throw new EntityExistsException("User already visited this day");
 
 		GamingDay gamingDay = gamingDayDAO.findById(entity.getGamingDay().getId());
@@ -54,7 +54,7 @@ public class PresenceServiceImpl implements PresenceService {
 	}
 
 	@Override
-	public List<Presence> findByParam(Long gamingDayId, Long userId, Boolean isEnded) {
-		return presenceDAO.findByParam(gamingDayId, userId, isEnded);
+	public List<Presence> findByParam(Long gamingDayId, Long userId, Boolean isEnded, int offset, int limit) {
+		return presenceDAO.findByParam(gamingDayId, userId, isEnded, offset, limit);
 	}
 }

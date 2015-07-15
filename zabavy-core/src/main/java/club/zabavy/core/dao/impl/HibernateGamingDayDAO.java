@@ -19,8 +19,10 @@ public class HibernateGamingDayDAO implements GamingDayDAO {
 	SessionFactory sessionFactory;
 
 	@Override
-	public List<GamingDay> getAll() {
+	public List<GamingDay> getAll(int offset, int limit) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from GamingDay");
+		query.setFirstResult(offset);
+		query.setMaxResults(limit);
 		return query.list();
 	}
 

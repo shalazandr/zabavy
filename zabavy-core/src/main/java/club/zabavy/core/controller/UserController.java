@@ -31,11 +31,13 @@ public class UserController {
 	@ResponseBody
 	public List<User> findGameboxes( @RequestParam(required = false) String name,
 									 @RequestParam(required = false) Integer level,
-									 @RequestParam(required = false) Role role) throws UnsupportedEncodingException {
+									 @RequestParam(required = false) Role role,
+									 @RequestParam(defaultValue = "0") int offset,
+									 @RequestParam(defaultValue = "21") int limit) throws UnsupportedEncodingException {
 		if(name != null) {
 			name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
 		}
-		return userService.findByParam(name, level, role);
+		return userService.findByParam(name, level, role, offset, limit);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST)

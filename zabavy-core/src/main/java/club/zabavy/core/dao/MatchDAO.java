@@ -5,5 +5,5 @@ import club.zabavy.core.domain.entity.Match;
 import java.util.List;
 
 public interface MatchDAO extends BaseDAO<Match> {
-	List<Match> findByParam(Long eventId, Long gameboxId, Boolean isTutorial);
+	List<Match> findByParam(Long eventId, Long gameboxId, Boolean isTutorial, int offset, int limit);
 }

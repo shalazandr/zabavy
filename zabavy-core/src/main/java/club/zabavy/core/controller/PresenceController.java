@@ -50,8 +50,10 @@ public class PresenceController {
 	@ResponseBody
 	public List<Presence> findPresence( @RequestParam(value = "userId", required = false) Long userId,
 										@RequestParam(value = "dayId", required = false) Long dayId,
-										@RequestParam(value = "ended", required = false) Boolean ended) {
+										@RequestParam(value = "ended", required = false) Boolean ended,
+										@RequestParam(defaultValue = "0") int offset,
+										@RequestParam(defaultValue = "21") int limit) {
 
-		return presenceService.findByParam(dayId, userId, ended);
+		return presenceService.findByParam(dayId, userId, ended, offset, limit);
 	}
 }

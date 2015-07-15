@@ -17,8 +17,8 @@ public class GameboxServiceImpl implements GameboxService {
 	GameboxDAO gameboxDAO;
 
 	@Override
-	public List<Gamebox> findByParam(String title, Boolean isAddon, Integer mink, Integer maxk) {
-		return gameboxDAO.findByParam(title, isAddon, mink, maxk);
+	public List<Gamebox> findByParam(String title, Boolean isAddon, Integer mink, Integer maxk, int offset, int limit) {
+		return gameboxDAO.findByParam(title, isAddon, mink, maxk, offset, limit);
 	}
 
 	@Override
