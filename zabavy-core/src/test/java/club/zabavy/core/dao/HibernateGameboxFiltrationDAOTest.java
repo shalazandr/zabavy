@@ -45,40 +45,40 @@ public class HibernateGameboxFiltrationDAOTest extends HibernateBaseDAOTest {
 
 	@Test
 	public void nullFilterTest(){
-		List<Gamebox> list = gameboxDAO.findByParam(null, null, null, null);
+		List<Gamebox> list = gameboxDAO.findByParam(null, null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(5, list.size());
 	}
 
 	@Test
 	public void filterByTitleTest(){
-		List<Gamebox> addons = gameboxDAO.findByParam("munch", null, null, null);
+		List<Gamebox> addons = gameboxDAO.findByParam("munch", null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(2, addons.size());
 
-		addons = gameboxDAO.findByParam("mun", null, null, null);
+		addons = gameboxDAO.findByParam("mun", null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(3, addons.size());
 
-		addons = gameboxDAO.findByParam("Ман", null, null, null);
+		addons = gameboxDAO.findByParam("Ман", null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(3, addons.size());
 
-		addons = gameboxDAO.findByParam("т", null, null, null);
+		addons = gameboxDAO.findByParam("т", null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(3, addons.size());
 
-		addons = gameboxDAO.findByParam("", null, null, null);
+		addons = gameboxDAO.findByParam("", null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(5, addons.size());
 
-		addons = gameboxDAO.findByParam(" " , null, null, null);
+		addons = gameboxDAO.findByParam(" " , null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(2, addons.size());
 
-		addons = gameboxDAO.findByParam("і", null, null, null);
+		addons = gameboxDAO.findByParam("і", null, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(2, addons.size());
 	}
 
 	@Test
 	public void filterAddonsTest(){
-		List<Gamebox> list = gameboxDAO.findByParam(null, true, null, null);
+		List<Gamebox> list = gameboxDAO.findByParam(null, true, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(2, list.size());
 
-		list = gameboxDAO.findByParam(null, false, null, null);
+		list = gameboxDAO.findByParam(null, false, null, null, 0, Integer.MAX_VALUE);
 		assertEquals(3, list.size());
 	}
 
