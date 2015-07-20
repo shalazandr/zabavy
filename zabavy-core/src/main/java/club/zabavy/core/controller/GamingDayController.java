@@ -30,6 +30,12 @@ public class GamingDayController {
 		}
 	}
 
+	@RequestMapping(value = "/days/count", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Object> getGamingDaysCount(@RequestParam long dateFrom, @RequestParam long dateTo) {
+		return gamingDayService.getEventsCount(new Date(dateFrom), new Date(dateTo));
+	}
+
 	@RequestMapping(value = "/days", method = RequestMethod.POST)
 	@ResponseBody
 	public GamingDay saveGamingDay(@RequestBody GamingDay gamingDay) {

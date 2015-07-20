@@ -23,6 +23,11 @@ public class GamingDayServiceImpl implements GamingDayService {
 	}
 
 	@Override
+	public List<Object> getEventsCount(Date dateFrom, Date dateTo) {
+		return gamingDayDAO.getEventsCount(dateFrom, dateTo);
+	}
+
+	@Override
 	public GamingDay findById(long id) {
 		return gamingDayDAO.findById(id);
 	}

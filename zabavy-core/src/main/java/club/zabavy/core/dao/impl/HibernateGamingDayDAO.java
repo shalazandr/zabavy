@@ -3,6 +3,7 @@ package club.zabavy.core.dao.impl;
 import club.zabavy.core.dao.GamingDayDAO;
 import club.zabavy.core.domain.entity.GamingDay;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -28,6 +29,14 @@ public class HibernateGamingDayDAO implements GamingDayDAO {
 		criteria.setFirstResult(offset);
 		criteria.setMaxResults(limit);
 		return criteria.list();
+	}
+
+	@Override
+	public List<Object> getEventsCount(Date dateFrom, Date dateTo) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("getEventsCount");
+		query.setDate("dateFrom", dateFrom);
+		query.setDate("dateTo", dateTo);
+		return query.list();
 	}
 
 	@Override

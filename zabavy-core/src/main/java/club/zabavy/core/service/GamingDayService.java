@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface GamingDayService extends BaseService<GamingDay> {
 	List<GamingDay> findByParam(Date dateFrom, Date dateTo, int offset, int limit);
+	List<Object> getEventsCount(Date dateFrom, Date dateTo);
 }

@@ -1,11 +1,20 @@
 package club.zabavy.core.domain.entity;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity
 @org.hibernate.annotations.Entity( dynamicUpdate = true )
+@NamedQueries({
+		@NamedQuery(
+				name = "getEventsCount",
+				query = "SELECT startTime AS date, COUNT(*) AS count FROM GamingDay e WHERE e.startTime BETWEEN :dateFrom AND :dateTo GROUP BY DATE(e.startTime)"
+		)
+})
 public class GamingDay extends BaseEntity {
 
 	private String title;
