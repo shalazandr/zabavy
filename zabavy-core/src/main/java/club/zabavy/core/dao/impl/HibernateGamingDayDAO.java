@@ -2,9 +2,10 @@ package club.zabavy.core.dao.impl;
 
 import club.zabavy.core.dao.GamingDayDAO;
 import club.zabavy.core.domain.entity.GamingDay;
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,11 +20,14 @@ public class HibernateGamingDayDAO implements GamingDayDAO {
 	SessionFactory sessionFactory;
 
 	@Override
-	public List<GamingDay> getAll(int offset, int limit) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from GamingDay");
-		query.setFirstResult(offset);
-		query.setMaxResults(limit);
-		return query.list();
+	public List<GamingDay> findByParam(Date dateFrom, Date dateTo, int offset, int limit) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(GamingDay.class);
+
+		if(dateFrom != null && dateTo != null) criteria.add(Restrictions.between("startTime", dateFrom, dateTo));
+
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(limit);
+		return criteria.list();
 	}
 
 	@Override

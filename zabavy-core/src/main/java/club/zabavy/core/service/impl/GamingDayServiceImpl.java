@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,8 +18,8 @@ public class GamingDayServiceImpl implements GamingDayService {
 	GamingDayDAO gamingDayDAO;
 
 	@Override
-	public List<GamingDay> getAll(int offset, int limit) {
-		return gamingDayDAO.getAll(offset, limit);
+	public List<GamingDay> findByParam(Date dateFrom, Date dateTo,int offset, int limit) {
+		return gamingDayDAO.findByParam(dateFrom, dateTo, offset, limit);
 	}
 
 	@Override

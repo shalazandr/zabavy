@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -20,8 +21,13 @@ public class GamingDayController {
 
 	@RequestMapping(value = "/days", method = RequestMethod.GET)
 	@ResponseBody
-	public List<GamingDay> getGamingDays(@RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "21") int limit) {
-		return gamingDayService.getAll(offset, limit);
+	public List<GamingDay> getGamingDays(@RequestParam(required = false) Long dateFrom, @RequestParam(required = false) Long dateTo,
+										 @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "21") int limit) {
+		if(dateFrom != null && dateTo != null) {
+			return gamingDayService.findByParam(new Date(dateFrom), new Date(dateTo), offset, limit);
+		} else {
+			return gamingDayService.findByParam(null, null, offset, limit);
+		}
 	}
 
 	@RequestMapping(value = "/days", method = RequestMethod.POST)
