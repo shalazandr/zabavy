@@ -21,3 +21,6 @@ This project contains the following modules:
 * **Jackson 2.4** for converting to/from JSON
 * **JUnit 2.4**, **Mockito 1.9** and **Spring-test** for testing.
 * **Maven 3**
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/gemberge/zabavy/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
