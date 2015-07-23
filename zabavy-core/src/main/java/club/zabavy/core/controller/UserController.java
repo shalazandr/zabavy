@@ -4,6 +4,8 @@ import club.zabavy.core.domain.Role;
 import club.zabavy.core.domain.entity.Gamebox;
 import club.zabavy.core.domain.entity.Meeting;
 import club.zabavy.core.domain.entity.User;
+import club.zabavy.core.domain.exceptions.ForbiddenActionException;
+import club.zabavy.core.service.AuthService;
 import club.zabavy.core.service.OwnershipService;
 import club.zabavy.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,6 +23,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/api")
 public class UserController {
+
+	@Autowired
+	AuthService authService;
 
 	@Autowired
 	private UserService userService;
@@ -42,8 +48,10 @@ public class UserController {
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	@ResponseBody
-	public User saveUser(@RequestBody User user) {
-		userService.insert(user);
+	public User saveUser(@RequestBody User user, HttpServletRequest request) {
+		User currentUser = authService.getUserFromCookie(request);
+		if(currentUser.getRole() == Role.ADMIN) userService.insert(user);
+		else throw new ForbiddenActionException("Only admins can add new user");
 		return user;
 	}
 
@@ -57,15 +65,22 @@ public class UserController {
 
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public User updateUser(@PathVariable("userId") Long id, @RequestBody User user) {
-		user.setId(id);
-		return userService.update(user);
+	public User updateUser(@PathVariable("userId") Long id, @RequestBody User user, HttpServletRequest request) {
+		User currentUser = authService.getUserFromCookie(request);
+		if(currentUser.getRole() == Role.ADMIN || currentUser.getId() == id) {
+			user.setId(id);
+			user = userService.update(user);
+		} else throw new ForbiddenActionException();
+
+		return user;
 	}
 
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteUser(@PathVariable("userId") Long id) {
-		userService.remove(id);
+	public void deleteUser(@PathVariable("userId") Long id, HttpServletRequest request) {
+		User currentUser = authService.getUserFromCookie(request);
+		if(currentUser.getRole() == Role.ADMIN) userService.remove(id);
+		else throw new ForbiddenActionException("Only admins can delete user");
 	}
 
 	@RequestMapping(value = "/users/{userId}/gameboxes", method = RequestMethod.GET)
