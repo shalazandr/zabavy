@@ -38,7 +38,7 @@ public class AuthController {
 				authService.login(vendor, code, response);
 				response.sendRedirect("/");
 			} catch(CredentialDoesNotExistException e) {
-				response.sendRedirect("/users/new/" + vendor);	// FIXME: it's bad for non browser client
+				response.sendRedirect("/register/" + vendor);	// FIXME: it's bad for non browser client
 			}
 		}
 	}
