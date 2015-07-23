@@ -29,11 +29,11 @@ public class UserController {
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	@ResponseBody
-	public List<User> findGameboxes( @RequestParam(required = false) String name,
-									 @RequestParam(required = false) Integer level,
-									 @RequestParam(required = false) Role role,
-									 @RequestParam(defaultValue = "0") int offset,
-									 @RequestParam(defaultValue = "21") int limit) throws UnsupportedEncodingException {
+	public List<User> findUsers(@RequestParam(required = false) String name,
+								@RequestParam(required = false) Integer level,
+								@RequestParam(required = false) Role role,
+								@RequestParam(defaultValue = "0") int offset,
+								@RequestParam(defaultValue = "21") int limit) throws UnsupportedEncodingException {
 		if(name != null) {
 			name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
 		}
