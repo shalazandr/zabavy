@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 public class Credential extends BaseEntity {
 
+	private String token;
 	private long vendorUserId;
 	private Vendor vendor;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -14,10 +15,19 @@ public class Credential extends BaseEntity {
 
 	public Credential() {}
 
-	public Credential(User user, Vendor vendor, long vendorUserId) {
+	public Credential(User user, Vendor vendor, long vendorUserId, String token) {
 		this.vendorUserId = vendorUserId;
 		this.vendor = vendor;
 		this.user = user;
+		this.token = token;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public long getVendorUserId() {

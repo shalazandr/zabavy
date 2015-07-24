@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
 		if(credential == null) {
 			User user = socialNetworkUtil.getVendorUserInfo(vendor, token);
 			userService.insert(user);
-			credential = new Credential(user, Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+			credential = new Credential(user, Vendor.valueOf(vendor.toUpperCase()), vendorUserId, token);
 			credentialDAO.insert(credential);
 
 			Cookie cookie = new Cookie("zabavy.auth", createAuthToken(user.getId()));
@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
 		long vendorUserId = socialNetworkUtil.getVendorUserId(vendor, token);
 		Credential credential = credentialDAO.find(Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
 		if(credential == null) {
-			credential = new Credential(user, Vendor.valueOf(vendor.toUpperCase()), vendorUserId);
+			credential = new Credential(user, Vendor.valueOf(vendor.toUpperCase()), vendorUserId, token);
 			credentialDAO.insert(credential);
 		} else {
 			throw new CredentialAlreadyExistException();
