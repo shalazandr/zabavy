@@ -1,6 +1,7 @@
 package club.zabavy.core.controller;
 
 import club.zabavy.core.domain.entity.User;
+import club.zabavy.core.domain.exceptions.CredentialAlreadyExistException;
 import club.zabavy.core.domain.exceptions.CredentialDoesNotExistException;
 import club.zabavy.core.domain.exceptions.NotAuthenticatedUserException;
 import club.zabavy.core.service.AuthService;
@@ -62,8 +63,12 @@ public class AuthController {
 		if(code == null) {
 			response.sendRedirect(socialNetworkUtil.getAuthLink(vendor, "register"));
 		} else {
-			authService.register(vendor, code, response);
-			response.sendRedirect("/");	// FIXME: it's bad for non browser client
+			try {
+				authService.register(vendor, code, response);
+				response.sendRedirect("/");	// FIXME: it's bad for non browser client
+			} catch (CredentialAlreadyExistException e) {
+				response.sendRedirect("/api/login/" + vendor);	// FIXME: it's bad for non browser client
+			}
 		}
 	}
 
