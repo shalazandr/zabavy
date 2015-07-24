@@ -55,6 +55,13 @@ public class UserController {
 		return user;
 	}
 
+	@RequestMapping(value = "/users/current", method = RequestMethod.GET)
+	@ResponseBody
+	public User getCurrentUser(HttpServletRequest request) {
+		User currentUser = authService.getUserFromCookie(request);
+		return userService.findById(currentUser.getId());
+	}
+
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
 	public User getUserById(@PathVariable("userId") Long id, HttpServletResponse response) throws IOException {
